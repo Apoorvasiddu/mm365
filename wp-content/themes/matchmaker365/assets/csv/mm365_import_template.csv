@@ -1,0 +1,2 @@
+﻿id,name,Address1,city,state,zip,phone,WebAddress,OwnerFirstName,OwnerLastName,OwnerTitle,OwnerPhone,OwnerEmail,NumberOfEmployeesFulltime,MinorityClassificationCode,naics,ProductDescription,MajorCustomers,AnnualSales
+6724,Test Company,Test Address,Dallas,TX,5555,45678900,example.com,Sample,User,James,4567888990,testcompimport@yopmail.com,25,AIM,,Company description,Ford,250000

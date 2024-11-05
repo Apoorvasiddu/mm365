@@ -1,0 +1,53 @@
+{
+    "report": {
+        "pass": 0,
+        "chunk": 1,
+        "chunkPos": {
+            "l0": "final_report",
+            "l1": null,
+            "l2": null
+        },
+        "progress_perc": 100,
+        "scan_tables": 60,
+        "scan_rows": 257397,
+        "scan_cells": 2391172,
+        "updt_tables": 4,
+        "updt_rows": 3383,
+        "updt_cells": 3431,
+        "errsql": [],
+        "errser": [],
+        "errkey": [],
+        "errsql_sum": 0,
+        "errser_sum": 0,
+        "errkey_sum": 0,
+        "profile_start": 1730818188.3809,
+        "profile_end": 1730818243.095692,
+        "time": "54.7148 sec.",
+        "err_all": 0,
+        "warn_all": 0,
+        "warnlist": []
+    },
+    "cTableParams": null,
+    "replaceData": [
+        {
+            "id": 0,
+            "prority": 12,
+            "scope": [
+                "___!GLOBAL!___!SCOPE!___"
+            ],
+            "type": "path",
+            "search": "C:\/wamp64\/www\/mmsdc_refactor",
+            "replace": "C:\/xampp\/htdocs\/mm365_dev_git\/mm365"
+        },
+        {
+            "id": 1,
+            "prority": 12,
+            "scope": [
+                "___!GLOBAL!___!SCOPE!___"
+            ],
+            "type": "urlnd",
+            "search": "http:\/\/localhost\/mmsdc_refactor",
+            "replace": "http:\/\/localhost\/mm365_dev_git\/mm365"
+        }
+    ]
+}

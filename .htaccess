@@ -1,0 +1,12 @@
+# This file was updated by Duplicator on 2024-11-05 14:50:43.
+# See the original_files_ folder for the original source_site_htaccess file.
+# BEGIN WordPress
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /mm365_dev_git/mm365/
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /mm365_dev_git/mm365/index.php [L]
+</IfModule>
+# END WordPress

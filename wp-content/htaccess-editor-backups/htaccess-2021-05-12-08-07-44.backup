@@ -1,0 +1,21 @@
+
+# BEGIN WordPress
+# The directives (lines) between "BEGIN WordPress" and "END WordPress" are
+# dynamically generated, and should only be modified via WordPress filters.
+# Any changes to the directives between these markers will be overwritten.
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+RewriteBase /mmsdc/
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /mmsdc/index.php [L]
+
+# BEGIN THIS DL-FILE.PHP ADDITION
+RewriteCond %{REQUEST_URI} ^.*wp-content/uploads/mm365/.*
+RewriteRule ^wp-content/uploads/(mm365/.*)$ dl-file.php?file=$1 [QSA,L]
+# END THIS DL-FILE.PHP ADDITION
+
+</IfModule>
+# END WordPress
