@@ -1,0 +1,294 @@
+// Login form UI CSS starts here
+.uwp_login_page{
+    background-color: whitesmoke;
+
+    & .uwp-login-class{
+
+        & .card.container-fluid{
+            border-radius: 15px;
+            box-shadow: 0px 0px 10px -6px;
+
+            & .card-body{
+                padding: 0px;
+
+                & h3{
+                    color: #fff;
+                    background-color: #1e73be;
+                    padding:10px;
+                    border-top-left-radius: 15px;
+                    border-top-right-radius: 15px;
+                }
+
+                & form.uwp-login-form{
+                    padding: 20px;
+                }
+
+                & .uwp-footer-links{
+                    padding: 0 20px 20px 20px;
+                    & a {
+                        text-decoration: underline;
+                    }
+                }
+            }
+        }
+    }
+}
+// Login form UI CSS ends here
+
+
+// Registration form UI CSS starts here
+.uwp_register_page{
+    background-color: whitesmoke;
+
+    & .uwp-register-class{
+
+        & .card.container-fluid{
+            border-radius: 15px;
+            box-shadow: 0px 0px 10px -6px;
+
+            & .card-body{
+                padding: 0px;
+
+                & h3{
+                    color: #fff;
+                    background-color: #1e73be;
+                    padding:10px;
+                    border-top-left-radius: 15px;
+                    border-top-right-radius: 15px;
+                }
+
+                & form.uwp-registration-form{
+                    padding: 20px;
+                }
+
+                & .uwp-footer-links{
+                    padding: 0 20px 20px 20px;
+                    & a {
+                        text-decoration: underline;
+                    }
+                }
+            }
+        }
+    }
+}
+// Registration form UI CSS ends here
+
+
+// Forgot Password form UI CSS starts here
+.uwp_forgot_page{
+    background-color: whitesmoke;
+
+    & .uwp-forgot-class{
+
+        & .card.container-fluid{
+            border-radius: 15px;
+            box-shadow: 0px 0px 10px -6px;
+
+            & .card-body{
+                padding: 0px;
+
+                & h3{
+                    color: #fff;
+                    background-color: #1e73be;
+                    padding:10px;
+                    border-top-left-radius: 15px;
+                    border-top-right-radius: 15px;
+                }
+
+                & form.uwp-forgot-form{
+                    padding: 20px;
+                }
+
+                & .uwp-footer-links{
+                    padding: 0 20px 20px 20px;
+                    & a {
+                        text-decoration: underline;
+                    }
+                }
+            }
+        }
+    }
+}
+// Forgot Password form UI CSS ends here
+
+// Forgot Password form UI CSS starts here
+.uwp_reset_page{
+    background-color: whitesmoke;
+
+    & .uwp_widget_reset{
+
+        & .card.container-fluid{
+            border-radius: 15px;
+            box-shadow: 0px 0px 10px -6px;
+
+            & .card-body{
+                padding: 0px;
+                box-shadow: 0px 0px 10px -6px;
+                border-radius: 15px;
+                & h3{
+                    color: #fff;
+                    background-color: #1e73be;
+                    padding:10px;
+                    border-top-left-radius: 15px;
+                    border-top-right-radius: 15px;
+                }
+
+                & form.uwp-login-form{
+                    padding: 0 20px;
+                    
+                }
+
+                & .uwp-footer-links{
+                    padding: 0 20px 20px 20px;
+                    margin-bottom: 30px;
+                    & a {
+                        text-decoration: underline;
+                    }
+                }
+            }
+        }
+    }
+}
+// Forgot Password form UI CSS ends here
+
+
+// Match requests search css starts here 
+#matchlist_filter{
+    & label{
+        // border: 1px solid #356ab3;
+        // border-radius: 20px;
+        // padding: 0px 15px;
+        // background-color: white;
+        // color: grey;
+
+        & input[type="search"]{
+            outline: none;
+        }
+    }
+}
+
+#matchlist_length{
+    & label{
+       & select{
+        border: 1px solid #356ab3;
+        outline: none;
+        }
+    }
+}
+// Match requests search css ends here 
+
+body{
+    margin: auto;
+}
+
+@media (max-width: 767px){
+.pto-100 {
+    margin: 0 20px;
+    }
+}
+
+.messageButton-message {
+    // visibility: hidden;
+    // opacity: 0;
+    transition: visibility 0.4s linear, opacity 0.4s ease;
+    line-height: 1.4;
+  }
+  
+  .messageButton:hover
+  .messageButton-message {
+    visibility: visible;
+    opacity: 1;
+  }
+  
+  
+  /* The visuals */
+  
+  .messageButton {
+    position: absolute;
+    width: 100%;
+    display: block;
+    margin-top: -5px;
+  }
+  
+  .messageButton-message {
+    font-size: 14px;
+    color: #fff;
+    text-align: center;
+    background-color: #1e73be;
+    box-shadow: 0 0 5px rgba(0,0,0,0.5);
+    width: 280px;
+    padding: 14px;
+    border-radius: 10px;
+    position: absolute;
+    bottom: calc(100% + 0px + 5px);
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .messageButton-message::after {
+    content: '';
+    position: absolute;
+    border: 10px solid;
+    border-color: #1e73be transparent transparent transparent;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  @media (max-width: 767px){
+    div.fc-content.fancybox-content p.text-right button.btn{
+        padding: 15px 18px !important;
+      }
+    ul#nav.desktop_header_nav{
+        margin-right: 15px !important;
+    }
+    ul#nav.desktop_header_nav li{
+        padding-left: 1.05rem !important;
+    }
+    .multiselect-icon{
+        top: 49px !important;
+        right: 15px !important;
+    }
+}
+
+//User switching
+
+#custom_user_switching_switch_on{
+    position:fixed; 
+    z-index:999999; 
+    bottom:20px; 
+    left:20px;
+    border-radius: 30px;
+    background: linear-gradient(0deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgb(253,29,29,1) 100%);
+    box-shadow: 0 4px 15px 0 rgba(0, 0, 0, 0.45);
+    padding: 10px 15px !important;
+    transition: all ease-in-out .3s;
+    & span{
+        font-weight: bold;
+    }
+    &:hover{
+        background: linear-gradient(0, rgb(30, 3, 48) 50%, rgb(88, 5, 5) 100%);
+    }
+    & a{
+        color: #fff;
+        &:hover{
+            color: #fff !important;
+        }
+        
+        & span{
+            font-weight: bold;
+        }
+    }
+}
+.switch_user_to{
+    & span{
+        font-weight: bold;
+    }
+}
+
+.hr{
+    border:none !important;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(131,58,180,0) 0%, rgb(170, 170, 170) 50%, rgba(252,176,69,0) 100%);
+}
