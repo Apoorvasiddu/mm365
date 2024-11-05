@@ -1,0 +1,80 @@
+{
+    "CL_-=_-=": "DUPX_DBInstall",
+    "post": {
+        "view_mode": "basic",
+        "dbname": "mm365",
+        "dbuser": "root",
+        "dbpass": "",
+        "dbport": null,
+        "dbmysqlmode": "DEFAULT",
+        "dbmysqlmode_opts": "",
+        "pos": 50914975,
+        "pass": 1,
+        "first_chunk": false,
+        "dbchunk_retry": 0,
+        "continue_chunking": false,
+        "progress": 100,
+        "delimiter": ";",
+        "is_error": 0,
+        "error_msg": ""
+    },
+    "dbaction": "empty",
+    "dbcharset": "utf8mb4",
+    "dbcollate": "",
+    "dbvar_maxtime": "5000",
+    "dbvar_maxpacks": "268435456",
+    "dbvar_sqlmode": "NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION",
+    "sql_file_path": "C:\/xampp\/htdocs\/mm365_dev_git\/mm365\/dup-installer\/dup-database__c890bfd-20144116.sql",
+    "table_count": 0,
+    "table_rows": 0,
+    "query_errs": 0,
+    "drop_tbl_log": 0,
+    "rename_tbl_log": 0,
+    "dbquery_errs": 91,
+    "dbquery_rows": 257897,
+    "dbtable_count": 60,
+    "dbtable_rows": 257635,
+    "profile_start": 1730816948.145395,
+    "start_microtime": 1730816948.144649,
+    "thread_start_time": 1730818172.702814,
+    "dbsplit_creates": true,
+    "dbFileSize": 50914975,
+    "setQueries": [
+        "\/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' *\/;"
+    ],
+    "dbUserMode": {
+        "CL_-=_-=": "Duplicator\\Installer\\Core\\Deploy\\Database\\DbUserMode",
+        "targetUsersById": [],
+        "usersAutoIncrement": -1,
+        "usersMetaAutoIncrement": -1,
+        "addedUsers": [],
+        "mappingIds": [],
+        "existingsMetaIsd": [],
+        "userTableNumCols": 0,
+        "userMode": "overwrite",
+        "prefixMetaRegexCheck": "\/^mmsdc_(?:(\\d+)_)?(.*)$\/",
+        "prefixMetaMapping": [
+            "mmsdc_"
+        ]
+    },
+    "queryFixes": {
+        "CL_-=_-=": "Duplicator\\Installer\\Core\\Deploy\\Database\\QueryFixes",
+        "globalRules": {
+            "search": [
+                "\/^(\\s*(?:\\\/\\*!\\d+\\s)?\\s*(?:CREATE.+)?DEFINER\\s*=)([^\\*\\s]+)(.*)$\/m",
+                "\/^(\\s*CREATE.+(?:PROCEDURE|FUNCTION)[\\s\\S]*)(BEGIN)([\\s\\S]*)$\/",
+                "\/(^.*(?:CHARSET|CHARACTER SET)\\s*[\\s=]\\s*[`'\"]?)([^`'\"\\s;,]+)([`'\"]?\\s.*COLLATE\\s*[\\s=]\\s*[`'\"]?)((?:utf8mb3_general_ci|utf8mb4_0900_ai_ci))([`'\"]?[\\s;,].*$)\/m",
+                "\/(^.*COLLATE\\s*[\\s=]\\s*[`'\"]?)((?:utf8mb3_general_ci|utf8mb4_0900_ai_ci))([`'\"]?\\s.*(?:CHARSET|CHARACTER SET)\\s*[\\s=]\\s*[`'\"]?)([^`'\"\\s;,]+)([`'\"]?.*$)\/m",
+                "\/(^.*COLLATE\\s*[\\s=]\\s*[`'\"]?)((?:utf8mb3_general_ci|utf8mb4_0900_ai_ci))([`'\"]?[\\s;,].*$)\/m"
+            ],
+            "replace": [
+                "$1`root`@`localhost`$3",
+                "$1SQL SECURITY INVOKER\n$2$3",
+                "$1utf8mb4$3utf8mb4_general_ci$5",
+                "$1utf8mb4_general_ci$3utf8mb4$5",
+                "$1utf8mb4_general_ci$3"
+            ]
+        },
+        "tablesPrefixRules": []
+    }
+}

@@ -1,0 +1,22 @@
+.check-icon{
+    position: absolute;
+    top: 37px;
+    right: 10px;
+    height: 24px;
+    width: 24px;
+    & img{
+        display: none;
+        height: 24px;
+    }
+}
+
+.user_lock{
+
+    color:rgb(32, 177, 92) !important;
+    font-weight: bold;
+
+    &.yes{
+        color:rgb(243, 64, 32)  !important;
+        
+    }
+}
