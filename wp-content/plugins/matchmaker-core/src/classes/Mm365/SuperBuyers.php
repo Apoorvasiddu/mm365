@@ -3,7 +3,7 @@
 namespace Mm365;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
+    exit; // Exit if accessed directly
 }
 
 
@@ -13,6 +13,7 @@ class SuperBuyers
     use CouncilAddons;
     use NotificationAddon;
     use TimezoneAddon;
+    use ReusableMethods;
     public $associated_buyers;
 
     function __construct()
@@ -305,7 +306,7 @@ class SuperBuyers
 
             /*
              * @Dependency UsersWP Plugin
-             * Find user_id in 'uwp_usermeta' table and update primary_msdc 	with id
+             * Find user_id in 'uwp_usermeta' table and update primary_msdc     with id
              */
             global $wpdb;
             $table_name = $wpdb->prefix . 'uwp_usermeta';
@@ -415,7 +416,7 @@ class SuperBuyers
             //Map users to Council here
             /*
              * @Dependency UsersWP Plugin
-             * Find user_id in 'uwp_usermeta' table and update primary_msdc 	with id
+             * Find user_id in 'uwp_usermeta' table and update primary_msdc     with id
              */
             $this->update_user_council($user_id, $council_id);
 
@@ -468,8 +469,8 @@ class SuperBuyers
                   <p>Username: ' . $user->user_login . '<br/> email:' . $user->user_email . '</p>
                   <p>To login, Please click on the below button to reset the password and login.</p>';
 
-        $body = $this->mm365_email_body($subject, $content, site_url('forgot'), 'Reset Password');
-
+       // $body = $this->mm365_email_body($subject, $content, site_url('forgot'), 'Reset Password');
+        $body = $this->mm365_email_body_template($subject, $content, site_url('forgot'), 'Reset Password');
         $headers = array('Content-Type: text/html; charset=UTF-8');
         if (wp_mail($to, $subject, $body, $headers)) {
             error_log("email has been successfully sent to user whose email is " . $user_email);
@@ -830,7 +831,7 @@ class SuperBuyers
   
           /*
            * @Dependency UsersWP Plugin
-           * Find user_id in 'uwp_usermeta' table and update primary_msdc 	with id
+           * Find user_id in 'uwp_usermeta' table and update primary_msdc   with id
            */
           global $wpdb;
           $table_name = $wpdb->prefix . 'uwp_usermeta';
@@ -865,11 +866,19 @@ class SuperBuyers
 
           update_post_meta( $company_id, 'mm365_approval_required_feature', 'enabled' );
 
-          $split_naics_codes = explode(", ",$naics_codes);
+          // $split_naics_codes = explode(", ",$naics_codes);
     
-          foreach($split_naics_codes as $naic){
-            add_post_meta( $company_id, 'mm365_naics_codes', $naic );
+          // foreach($split_naics_codes as $naic){
+          //   add_post_meta( $company_id, 'mm365_naics_codes', $naic );
+          // }
+
+          //Loop and save NAICS
+          $new_naics = array_filter($_POST['naics_codes'], array($this, "purge_empty"));
+          delete_post_meta($company_id, 'mm365_naics_codes');
+          foreach ($new_naics as $naic) {
+            add_post_meta($company_id, 'mm365_naics_codes', $naic);
           }
+
         
           //Add to buyer team
           add_user_meta($superbuyer_id, '_mm365_associated_buyer', sanitize_text_field($company_id));
@@ -915,8 +924,8 @@ class SuperBuyers
                   <p>Username: ' . $user->user_login . '<br/> email:' . $user->user_email . '</p>
                   <p>To login, Please click on the below button to receive a password reset email in your inbox. Once you receive the email do reset the password and continue to login.</p>';
 
-        $body = $this->mm365_email_body($subject, $content, site_url('forgot'), 'Reset Password');
-
+        //$body = $this->mm365_email_body($subject, $content, site_url('forgot'), 'Reset Password');
+        $body = $this->mm365_email_body_template($subject, $content, site_url('forgot'), 'Reset Password');
         $headers = array('Content-Type: text/html; charset=UTF-8');
         if (wp_mail($to, $subject, $body, $headers)) {
             error_log("email has been successfully sent to user whose email is " . $user_email);

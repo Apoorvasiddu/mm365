@@ -125,7 +125,7 @@ get_header();
                                                         name="associatedbuyer_brand" pattern="[a-zA-Z\s]+" minlength="2">
                                         </div>
                                 </div>
-                                <div class="form-row form-group"
+                                <!-- <div class="form-row form-group"
                                         data-intro="Please enter the meeting agenda and notes if any.">
                                         
                                         <div class="col-lg-12">
@@ -137,6 +137,32 @@ get_header();
                                                 <input placeholder="" id="sb_naics_code" class="form-control" type="text" required
                                                         name="sb_naics_codes"  minlength="2">
                                         </div>
+                                </div> -->
+                                <div  class="form-row form-group">
+                                        
+    <div id="basicSearchFields" class="col-lg-4">
+                                    <label for="">Find NAICS codes<br/>
+                                          </label>
+                                   
+                                    <section  class="naics-codes">
+                                          <div  class="form-row">
+                                                <div class="col naics-input-box">
+                                                      <input class="form-control naics-input" type="text" min="10"
+                                                            max="999999" name="naics_code" placeholder="search and select naics code" >
+                                                            <p class="naic-info"></p>
+                                                            <div class="naic-suggested"></div>
+                                                </div>
+                                          </div>
+                                    </section>
+                                   <label><small>Search by category name or NAICS code then click the list to add</small></label>
+                              </div>
+                              <div class="col-lg-3">
+                              <label for="">Selected NAICS codes<span>*</span><br/>
+                                         
+                                    </label>
+                                    <section class="naics-codes-dynamic"></section>
+                              </div>
+
                                 </div>
                                 <div class="form-row form-group"
                                         data-intro="Please enter the meeting agenda and notes if any.">

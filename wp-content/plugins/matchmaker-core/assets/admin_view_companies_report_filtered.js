@@ -23,7 +23,7 @@
         if ($('form#mm365_generate_report_comapny').parsley().isValid()) {
           e.preventDefault();
           localStorage.clear();
-          var vals = $(".rep-naic").map(function () { return this.value }).get();
+          var vals = $('input[name="naics_codes[]"]').map(function () { return this.value }).get();
           var redirect_to = $(this).data('redirect');
 
           localStorage.crv_from_date = $('input[name=from_date]').val();

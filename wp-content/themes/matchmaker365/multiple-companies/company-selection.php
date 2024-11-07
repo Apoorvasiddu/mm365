@@ -98,9 +98,10 @@ get_header();
     <tbody>
     <?php foreach ($companies_list as $key => $value) { 
         $council_id =  get_post_meta( $value['id'], 'mm365_company_council', true);
+        $post_status = esc_html(get_post_status($value['id'])); 
       ?>
       <tr>
-        <td><?php echo esc_html(get_the_title($value['id'])); ?></td>
+        <td><?php echo esc_html(get_the_title($value['id'])); ?><small class="text-danger"><?php echo ($post_status == 'draft') ? ' - Unlisted':''; ?></small></td>
         <td><?php echo apply_filters('mm365_council_get_info', $council_id) ?></td>
         <td><?php echo apply_filters('mm365_company_get_type', get_post_meta( $value['id'], 'mm365_service_type', true)) ; ?></td>
         <td><?php 

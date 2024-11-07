@@ -77,8 +77,17 @@
                     endif;
                     ?>
                     <div class="logged-in-desktop">
+                        <!-- upcoming conferences notification icon  -->
+                        <?php if (is_user_logged_in()): 
+                            $company_type = '';
+                            if(isset($_COOKIE['active_company_id'])) {
+                                $company_type = get_post_meta( $_COOKIE['active_company_id'], 'mm365_service_type', true );
+                            }
+                        endif;?>
+                        <!-- upcoming conferences notification icon end -->
                         <?php if (is_user_logged_in()): ?>
-                            <ul class="desktop_header_usermenu">
+                        <!-- upcoming conferences notification icon added notification_seller class -->
+                            <ul class="desktop_header_usermenu <?php echo ($company_type == 'seller') ? 'notification_seller' : ''; ?>">
                                 <li class="has-drpdn"><a class="user-welcome" href="#">
                                         <?php $user = wp_get_current_user();
                                         if ($user->first_name != '')
@@ -89,11 +98,35 @@
                                         <a href="<?php echo wp_logout_url(home_url()); ?>">Logout</a>
                                     </div>
                                 </li>
+                                <!-- upcoming conferences notification icon  -->
+                                 <?php
+                                if($company_type == 'seller'){
+                                ?>
+                                    <a href="<?php echo home_url('/upcoming-conferences'); ?>" id="notification-bell" class="notification-icon">
+                                        <i class="fa fa-bell"></i>
+                                        <span id="notification-count"> <?php echo get_upcoming_conferences_count(); ?> </span>
+                                    </a>
+                                <?php
+                                }
+                                ?>
+                                <!-- upcoming conferences notification icon end -->
                             </ul>
                         <?php endif; ?>
                     </div>
                     <div class="logged-in-mobile">
                         <?php if (is_user_logged_in()): ?>
+                        <!-- upcoming conferences notification icon  -->
+                        <?php 
+                             if($company_type == 'seller'){
+                                ?>
+                                <a href="<?php echo home_url('/upcoming-conferences'); ?>" id="notification-bell" class="notification-icon">
+                                    <i class="fa fa-bell"></i>
+                                    <span id="notification-count"> <?php echo get_upcoming_conferences_count(); ?> </span>
+                                </a>
+                            <?php
+                            }
+                            ?>
+                            <!-- upcoming conferences notification icon end -->
                             <div class="navigation__wrapper">
                                 <input type="checkbox" id="hamburger">
                                 <label for="hamburger" class="navigation__button">

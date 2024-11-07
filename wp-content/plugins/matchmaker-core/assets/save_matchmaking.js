@@ -193,11 +193,22 @@
         /*-------------------------------------------------------------------------------- */
         $('form#mm365_request_for_match').submit(function (e) {
             e.preventDefault();
+
+
+            // if () {
+            //     alert("exists");
+            //   }else{
+            //     alert('NAICS code is mandatory. Use the search field to find and add NAICS code');
+            //     $(this).parsley().isValid(false);
+            //   }
+            var count_naics = $("input[name='naics_codes[]']").length;
+
+
             var form = $(this)[0];
             var formdata = new FormData(form);
             formdata.append('action', 'match_create');
             formdata.append('nonce', matchmakingAjax.nonce);
-            if ($(this).parsley().isValid()) {
+            if (count_naics > 0 && $(this).parsley().isValid()) {
                 var mode = $('#advanced_search').val();
                 $.ajax({
                     url: matchmakingAjax.ajaxurl,
@@ -236,6 +247,14 @@
                         }
                     }
                 });
+            }else{
+                //alert('NAICS code is mandatory. Please select at least one code to continue')
+                Notiflix.Report.failure(
+                    'NAICS code is required',
+                    'Please select atleast one NAICS code to continue. You can search select the code from "Find NAICS codes" field',
+                    'OK',
+                    );
+                    
             }
 
         });
@@ -244,11 +263,13 @@
         /*-------------------------------------------------------------------------------- */
         $('form#mm365_request_for_match_update').submit(function (e) {
             e.preventDefault();
+
+            var count_naics = $("input[name='naics_codes[]']").length;
             var form = $(this)[0];
             var formdata = new FormData(form);
             formdata.append('action', 'match_update');
             formdata.append('nonce', matchmakingAjax.nonce);
-            if ($(this).parsley().isValid()) {
+            if (count_naics > 0 && $(this).parsley().isValid()) {
                 var mode = $('#advanced_search').val();
                 $.ajax({
                     url: matchmakingAjax.ajaxurl,
@@ -286,7 +307,16 @@
                         }
                     }
                 });
+            }else{
+                //alert('NAICS code is mandatory. Please select at least one code to continue')
+                Notiflix.Report.failure(
+                    'NAICS code is required',
+                    'Please select atleast one NAICS code to continue. You can search select the code from "Find NAICS codes" field',
+                    'OK',
+                    );
+                    
             }
+
 
         });
 
@@ -301,7 +331,8 @@
             var formdata = new FormData(form);
             formdata.append('action', 'match_unsaved_preview');
             formdata.append('nonce', matchmakingAjax.nonce);
-            if ($(this).parsley().isValid()) {
+            var count_naics = $("input[name='naics_codes[]']").length;
+            if (count_naics > 0 && $(this).parsley().isValid()) {
                 var mode = $('#advanced_search').val();
                 localStorage.clear();
 
@@ -414,6 +445,14 @@
                         }
                     }
                 });
+            }else{
+                //alert('NAICS code is mandatory. Please select at least one code to continue')
+                Notiflix.Report.failure(
+                    'NAICS code is required',
+                    'Please select atleast one NAICS code to continue. You can search select the code from "Find NAICS codes" field',
+                    'OK',
+                    );
+                    
             }
 
         });
@@ -507,6 +546,9 @@
                 "processing": true,
                 "serverSide": false,
                 "pagingType": "first_last_numbers",
+                "pageLength": 6,
+                //"lengthMenu": [1,2,3,4,5,6, 7, 8, 9, 10],
+                "bLengthChange" : false,
                 "order": [],
                 "columnDefs": [{
                     "targets": 'no-sort',
@@ -534,6 +576,24 @@
 
             });
             $('#matchresults-list_filter label:last').append('<br/><small>Search using any of the column values</small>');
+            
+            // Customize search to search both visible and hidden descriptions
+            $('#matchresults-list_filter input').on('keyup change', function () {
+                var searchTerm = $(this).val();
+
+                users_resultset.rows().every(function () {
+                    var rowData = this.node();
+                    var visibleDescription = $(rowData).find('td:nth-child(4)').text();displayed
+                    var fullDescription = $(rowData).find('.hidden-full-description').text(); 
+                    var combinedDescription = visibleDescription + " " + fullDescription;
+                    if (combinedDescription.toLowerCase().includes(searchTerm.toLowerCase())) {
+                        $(rowData).show();
+                    } else {
+                        $(rowData).hide();
+                    }
+                });
+                users_resultset.draw();
+            });
 
             /* Council filtering */
 

@@ -17,6 +17,7 @@ class Matchrequest extends Helpers
   use CompaniesAddon;
   use CertificateAddon;
   use MeetingAddon;
+  use CountryStateCity;
 
 
   function __construct()
@@ -276,6 +277,7 @@ class Matchrequest extends Helpers
 
     $nonce      = sanitize_text_field($_POST['nonce']);   
     if (!wp_verify_nonce( $nonce, 'mm365_matchrequest' ) OR !is_user_logged_in() OR ($user->ID != $authid)) {
+       echo 'Invalid';
         die();
     }
 
@@ -310,10 +312,16 @@ class Matchrequest extends Helpers
     }
 
     //Fecthing names and adding them to meta for search related purposes
+    if(!empty($_POST['service_required_countries'][0])){
     $s_local = $this->multi_countries_state_display($_POST['service_required_countries'], $_POST['service_required_states']);
-    if ($s_local == '-') {
+    }else {$s_local = null;}
+
+   
+    if ($s_local == '-' OR $s_local == null OR $s_local == '') {
       $s_local = 'Any Country, Any States';
     }
+
+   
 
     $keywords = $_POST['services_looking_for'];
 
@@ -397,15 +405,17 @@ class Matchrequest extends Helpers
     endif;
 
 
-    $sorted_locations = $this->countries_states_sorter($_POST['service_required_countries'], $_POST['service_required_states']);
-    if (!empty($sorted_locations)) {
+    delete_post_meta($post_id, 'mm365_service_needed_country');
+    delete_post_meta($post_id, 'mm365_service_needed_state');
+    if (!empty($_POST['service_required_countries'][0]) AND $s_local != 'Any Country, Any States') {
+      $sorted_locations = $this->countries_states_sorter($_POST['service_required_countries'], $_POST['service_required_states']);
       //Countries
-      delete_post_meta($post_id, 'mm365_service_needed_country');
+      
       foreach ($sorted_locations['countries'] as $country) {
         add_post_meta($post_id, 'mm365_service_needed_country', $country);
       }
       //States
-      delete_post_meta($post_id, 'mm365_service_needed_state');
+      
       foreach ($sorted_locations['states'] as $state) {
         add_post_meta($post_id, 'mm365_service_needed_state', $state);
       }
@@ -420,6 +430,7 @@ class Matchrequest extends Helpers
     } else {
       echo $this->show($post_id);
     }
+  
 
     wp_die();
 
@@ -598,7 +609,7 @@ class Matchrequest extends Helpers
                 <?php
                 $allow = array('br' => array());
                 echo wp_kses(get_post_meta(get_the_ID(), 'mm365_location_for_search', true), $allow)
-                  ?>
+                ?>
               </td>
             </tr>
       
@@ -695,6 +706,7 @@ class Matchrequest extends Helpers
           </div>
         </div>
       <?php endif; ?>
+      
 
       <?php
     endwhile;
@@ -796,7 +808,10 @@ class Matchrequest extends Helpers
                     
                     $services_needed_countries = $_POST['service_required_countries'];
                     $services_needed_states    = $_POST['service_required_states'];
-                    echo $this->multi_countries_state_display($services_needed_countries, $services_needed_states );
+                    if(!empty($_REQUEST['service_required_countries'][0])){
+                    
+                      echo $this->multi_countries_state_display($services_needed_countries, $services_needed_states );
+                    }
                     ?></td>
                   </tr>
 
@@ -979,6 +994,7 @@ class Matchrequest extends Helpers
         $last_updated_byuser = get_post_meta(get_the_ID(), 'mm365_matched_companies_last_updated', true);
         $nestedData = array();
         $nestedData[] = get_post_meta(get_the_ID(), 'mm365_services_details', true);
+        $nestedData[] = implode(", ",get_post_meta(get_the_ID(),'mm365_naics_codes'));
         $nestedData[] = $last_updated_byuser;
         //Location Display
         $nestedData[] = get_post_meta(get_the_ID(), 'mm365_location_for_search', true);
@@ -1038,7 +1054,9 @@ class Matchrequest extends Helpers
           <tr>
             <td><strong><?php 
             $this->get_certified_badge($key);
-            echo "<a href='".site_url()."/view-company?cid=".$key."&mr_id=".$mr_id."'>".get_the_title($key)."</a>"; ?></strong>
+            echo "<a href='".site_url()."/view-company?cid=".$key."&mr_id=".$mr_id."'>".get_the_title($key)."</a>"; ?></strong><br/>
+            <small><?php echo $this->get_cityname(get_post_meta($key,'mm365_company_city',true)); ?>,
+            <?php echo $this->get_countryname(get_post_meta($key,'mm365_company_country',true)); ?></small>
             </td>
             <td>
             <?php 
@@ -1058,7 +1076,13 @@ class Matchrequest extends Helpers
             <td>
               <?php
                 $company_info = get_post_meta($key,'mm365_company_description', true); 
-                echo (strlen($company_info) > 250) ? substr(wp_strip_all_tags($company_info),0,250)."..." : $company_info;
+                // To get full company description to search
+                // echo (strlen($company_info) > 250) ? substr(wp_strip_all_tags($company_info),0,250)."..." : $company_info;
+                
+                $truncated_info = (strlen($company_info) > 250) ? substr(wp_strip_all_tags($company_info), 0, 250) . "..." : $company_info;
+                // Include the full description in a hidden span for searching
+                echo "<span class='visible-description'>" . $truncated_info . "</span>";
+                echo "<span class='hidden-full-description' style='display:none;'>" . wp_strip_all_tags($company_info) . "</span>";
               
               ?>
             </td>

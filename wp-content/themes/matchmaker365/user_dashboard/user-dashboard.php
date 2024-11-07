@@ -15,7 +15,7 @@ do_action('mm365_helper_check_loginandrole',array('business_user'));
 $company_type = get_post_meta( $_COOKIE['active_company_id'], 'mm365_service_type', true );
 
 //Redirect if the user hasn't registered a company yet
-apply_filters('mm365_helper_check_companyregistration', 'register-your-company');
+do_action('mm365_helper_check_companyregistration', 'register-your-company');
 
 $active_company_id = $_COOKIE['active_company_id'];
 

@@ -5,7 +5,7 @@
  */
 $user = wp_get_current_user();
 
-do_action('mm365_helper_check_loginandrole',['council_manager']);
+do_action('mm365_helper_check_loginandrole', ['council_manager']);
 
 get_header();
 ?>
@@ -43,7 +43,7 @@ get_header();
                 <div class="conferece_description_error"></div>
               </div>
             </div>
-
+            <!--
             <div class="form-row form-group">
               <div class="col-6">
                 <label for="">Approximate Value of Business<span>*</span></label>
@@ -56,7 +56,7 @@ get_header();
                   name="keywords" id="keywords" value="">
               </div>
             </div>
-
+           
             <div class="form-row form-group">
               <div class="col-6">
                 <label for="">Conference Scope<span>*</span></label><br />
@@ -68,8 +68,7 @@ get_header();
                 </div>
               </div>
             </div>
-
-
+ -->
             <div class="pto-30">
               <h5>Participating Buyer(s)</h5>
               <hr>
@@ -93,7 +92,7 @@ get_header();
               <label for="">Time Zone<span>*</span>
               </label><br />
               <select name="timezone" id="timezone" class="form-control mm365-single">
-              <?php echo apply_filters('mm365_meetings_list_timezones',1)  ?>
+                <?php echo apply_filters('mm365_meetings_list_timezones', 1) ?>
               </select>
 
             </div>
@@ -128,18 +127,20 @@ get_header();
               </div>
               <div class="col-6">
                 <label for="">Map link</label>
-                <input type="url" name="map_link"  id="" class=" form-control " placeholder="">
+                <input type="url" name="map_link" id="" class=" form-control " placeholder="">
               </div>
             </div>
+            <!--
             <div class="form-row form-group">
               <div class="col-12">
                 <label for="">Event Amenities<span>*</span></label>
                 <textarea rows="4" placeholder="Details of amenities, food beverages parking etc" class="form-control"
                   type="text" required name="event_amneties" id="" value=""></textarea>
               </div>
-            </div>
+            </div> -->
 
             <div class="form-row form-group">
+              <!--
               <div class="col-5">
                 <label for="">Maximum Occupancy <span>*</span></label>
                 <span class="d-flex gap-3">
@@ -149,6 +150,7 @@ get_header();
                 </span>
                 <div class="maximum_deligates_error"></div>
               </div>
+            -->
               <div class="col-5">
                 <label for="">Registration Closing Date <span>*</span></label>
                 <input type="text" name="registration_closing_date" id="" class="form-control registration_closing_date"

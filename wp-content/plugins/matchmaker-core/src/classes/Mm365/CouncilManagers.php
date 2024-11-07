@@ -161,7 +161,7 @@ class CouncilManagers
       //Map users to Council here
       /*
        * @Dependency UsersWP Plugin
-       * Find user_id in 'uwp_usermeta' table and update primary_msdc 	with id
+       * Find user_id in 'uwp_usermeta' table and update primary_msdc   with id
        */
       global $wpdb;
       $table_name = $wpdb->prefix . 'uwp_usermeta';
@@ -254,7 +254,7 @@ class CouncilManagers
       //Map users to Council here
       /*
        * @Dependency UsersWP Plugin
-       * Find user_id in 'uwp_usermeta' table and update primary_msdc 	with id
+       * Find user_id in 'uwp_usermeta' table and update primary_msdc   with id
        */
       // global $wpdb;
       // $table_name = $wpdb->prefix . 'uwp_usermeta';
@@ -345,8 +345,8 @@ class CouncilManagers
                   <p>Username: ' . $user->user_login . '<br/> email:' . $user->user_email . '</p>
                   <p>To login, Please click on the below button to set the password and login.</p>';
 
-    $body = $this->mm365_email_body($subject, $content, site_url('forgot'), 'Reset Password');
-
+    //$body = $this->mm365_email_body($subject, $content, site_url('forgot'), 'Reset Password');
+    $body = $this->mm365_email_body_template($subject, $content, site_url('forgot'), 'Reset Password');
     $headers = array('Content-Type: text/html; charset=UTF-8');
     if (wp_mail($to, $subject, $body, $headers)) {
       error_log("email has been successfully sent to user whose email is " . $user_email);

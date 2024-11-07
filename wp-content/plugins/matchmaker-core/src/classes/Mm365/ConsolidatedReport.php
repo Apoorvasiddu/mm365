@@ -226,7 +226,8 @@ class ConsolidatedReport
               <p>Please find below Matchmaker365 Consolidated Weekly Report from ' . date('m/d/Y', strtotime('-7 days')) . " to " . date('m/d/Y') . '</p><br/>' . $report .
             '<p>Login to view the details</p>';
 
-        $body = $this->mm365_email_body($subject, $content, site_url('login'), 'Login');
+        //$body = $this->mm365_email_body($subject, $content, site_url('login'), 'Login');
+         $body = $this->mm365_email_body_template($subject, $content, site_url('login'), 'Login');
         $headers = array('Content-Type: text/html; charset=UTF-8');
 
         $users = get_users(array('role__in' => array('mmsdc_manager')));

@@ -31,10 +31,10 @@
   <thead class="thead-dark">
     <tr>
       <th><h6>Title</h6></th>
-      <th><h6>Scope</h6></th>
-      <th class="no-sort"><h6>Keywords</h6></th>
+      <!--<th><h6>Scope</h6></th>
+      <th class="no-sort"><h6>Keywords</h6></th> -->
       <th class="no-sort"><h6>Date</h6></th>
-      <th class="no-sort"><h6>Approximate Business Value</h6></th>
+      <!--<th class="no-sort"><h6>Approximate Business Value</h6></th> -->
       <th  width="20%" class="no-sort"><h6>Contact Person</h6></th>
       <th  width="20%" class="no-sort"><h6>Applicants Count</h6></th>
       <th class="no-sort"><h6></h6></th>
@@ -50,10 +50,10 @@
     ?>
     <tr>
       <td><?php echo esc_html($value['name']); ?></td>
-      <td class="text-capitalize"><span class="badge <?php echo esc_html($value['scope']); ?>"><?php echo esc_html($value['scope']); ?></span></td>
-      <td><?php echo esc_html($value['keywords']); ?></td>
+      <!-- <td class="text-capitalize"><span class="badge <?php echo esc_html($value['scope']); ?>"><?php echo esc_html($value['scope']); ?></span></td>
+      <td><?php echo esc_html($value['keywords']); ?></td> -->
       <td><?php echo esc_html($value['date']); ?></td>
-      <td><?php echo esc_html($value['business_value']); ?></td>
+      <!--<td><?php //echo esc_html($value['business_value']); ?></td> -->
       <td><?php echo wp_kses( $value['contact_person'], array('br' => array()) ); ?></td>
       <td><?php echo apply_filters('mm365_offline_conference_get_deligates_count',$value['ID']) ?></td>
       <td><a href="<?php echo add_query_arg( '_wpnonce', wp_create_nonce( 'view_offline_conf' ), site_url('view-offline-conference').'?conf_id='.$value['ID']); ?>">VIEW</a>  </td>

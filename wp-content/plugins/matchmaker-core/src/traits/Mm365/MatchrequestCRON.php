@@ -62,7 +62,8 @@ trait MatchrequestCRON
                     <p>There is ' . $count_pending_approvals . ' new match in Matchmaker365, which is pending for approval.  Please click on the below button to view the details and approve the request.</p>';
         endif;
 
-        $body = $this->mm365_email_body($title, $content, $link, 'View Pending Matches');
+        //$body = $this->mm365_email_body($title, $content, $link, 'View Pending Matches');
+         $body = $this->mm365_email_body_template($title, $content, $link, 'View Pending Matches');
         $headers = array('Content-Type: text/html; charset=UTF-8');
         if ($count_pending_approvals > 0) {
             wp_mail($to, $subject, $body, $headers);
@@ -182,8 +183,8 @@ trait MatchrequestCRON
 
                 $requester_cmp_email = get_post_meta($key, 'mm365_company_email', true);
                 
-                $body = $this->mm365_email_body($subject, $content, site_url('login'), 'Login');
-
+                //$body = $this->mm365_email_body($subject, $content, site_url('login'), 'Login');
+                $body = $this->mm365_email_body_template($subject, $content, site_url('login'), 'Login');
                 $headers = array('Content-Type: text/html; charset=UTF-8');
 
                 //Trigger email to all requesters

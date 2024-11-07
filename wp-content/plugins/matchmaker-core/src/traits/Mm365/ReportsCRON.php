@@ -67,7 +67,8 @@ trait ReportsCRON
                             <p>You have ' . ($value['suppliers'] + $value['buyers']) . ' new user registrations today in Matchmaker365 for ' . $council_shortname . '.</p>
                             <p>Please click on the below button to login and view the details.</p>';
 
-            $body = $this->mm365_email_body($title, $content, $link, 'Dashboard');
+           // $body = $this->mm365_email_body($title, $content, $link, 'Dashboard');
+             $body = $this->mm365_email_body_template($title, $content, $link, 'Dashboard');
             $headers = array('Content-Type: text/html; charset=UTF-8');
 
             wp_mail($value['emails'], $subject, $body, $headers);

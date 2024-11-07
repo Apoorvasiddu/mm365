@@ -100,9 +100,10 @@ trait SubscriptionAddon{
           Expired subscriptions will block your chance for being visible in match requests thus affecting more business alliances coming to your way</p>';
         }
 
-        $body        = $this->mm365_email_body($title,$content,$link,'Renew Subscription');
+       // $body        = $this->mm365_email_body($title,$content,$link,'Renew Subscription');
+        $body        = $this->mm365_email_body_template($title,$content,$link,'Renew Subscription');
         $headers     = array('Content-Type: text/html; charset=UTF-8');
-        wp_mail( $mail_id, $subject, $body, $headers ); 
+       // wp_mail( $mail_id, $subject, $body, $headers ); 
 
       }
 

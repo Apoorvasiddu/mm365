@@ -71,8 +71,8 @@ get_header();
                 <?php echo esc_html(get_post_meta($conf_id, 'conf_date', true)); ?>
               </div>
               <div class="col-4 text-center"><span>
-                  <?php echo apply_filters('mm365_offline_conference_get_deligates_count', $conf_id) ?> /
-                  <?php echo get_post_meta($conf_id, 'conf_maximum_deligates', true); ?> Deligates
+                  <?php // echo apply_filters('mm365_offline_conference_get_deligates_count', $conf_id) ?> 
+                  <?php //echo get_post_meta($conf_id, 'conf_maximum_deligates', true); ?> 
                 </span></div>
               <div class="col-4 text-right">by
                 <?php echo get_post_meta($conf_id, 'conf_organizer', true); ?>

@@ -311,7 +311,17 @@
                 if(company_desc != ''){
                     $("#company_description").parsley().reset();
                 }
-                if ( $(this).parsley().isValid() ) { 
+                var count_naics = $("input[name='naics_codes[]']").length;
+                if(count_naics == 0 ){
+                    Notiflix.Report.failure(
+                        'NAICS code is required',
+                        'Please select atleast one NAICS code to continue. You can search select the code from "Find NAICS codes" field',
+                        'OK',
+                        );
+                        
+                }
+
+                if (count_naics > 0 && $(this).parsley().isValid() ) { 
                     
                     $.ajax({ 
                         url : companyAjax.ajax_url,
@@ -357,7 +367,8 @@
                             }
                         }
                     }); 
-               }else{
+               }
+               else{
                   setTimeout(function(){ 
                     if ($('.descError').find('.parsley-errors-list.filled').length) {
                         $([document.documentElement, document.body]).animate({
@@ -365,6 +376,8 @@
                         }, 500);
                     }
                   }, 50);
+
+
 
                }
 
@@ -377,6 +390,18 @@
                  
                 //If no manufacturing location not submit
                 var manuf_location = ($(".remove-manufacturing-location").length);
+
+                var count_naics = $("input[name='naics_codes[]']").length;
+                if(count_naics == 0 ){
+                    Notiflix.Report.failure(
+                        'NAICS code is required',
+                        'Please select atleast one NAICS code to continue. You can search select the code from "Find NAICS codes" field',
+                        'OK',
+                        );
+                        
+                }
+
+
                 if(manuf_location == 0 && $('#country_itr').val() == ''){
                    //Disable submission, add validation
                    $('#country_itr').prop('required',true);
@@ -401,7 +426,7 @@
                         if(company_desc != ''){
                             $("#company_description").parsley().reset();
                         }
-                        if ( $(this).parsley().isValid() ) { 
+                        if (count_naics > 0 && $(this).parsley().isValid() ) { 
                             $.ajax({ 
                                 url : companyAjax.ajax_url,
                                 data: formdata_up,
@@ -465,6 +490,16 @@
             $('form#active_update_company').submit(function(e){
                 e.preventDefault(); 
 
+                var count_naics = $("input[name='naics_codes[]']").length;
+                if(count_naics == 0 ){
+                    Notiflix.Report.failure(
+                        'NAICS code is required',
+                        'Please select atleast one NAICS code to continue. You can search select the code from "Find NAICS codes" field',
+                        'OK',
+                        );
+                        
+                }
+
                 //If no manufacturing location not submit
                 var manuf_location = ($(".remove-manufacturing-location").length);
                 if(manuf_location == 0 && $('#country_itr').val() == ''){
@@ -490,7 +525,7 @@
                             if(company_desc != ''){
                                 $("#company_description").parsley().reset();
                             }
-                            if ( $(this).parsley().isValid() ) { 
+                            if (count_naics > 0 &&  $(this).parsley().isValid() ) { 
                                 $.ajax({ 
                                     url : companyAjax.ajax_url,
                                     data: formdata_up,

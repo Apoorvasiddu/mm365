@@ -428,3 +428,88 @@ function mm365_clearcookie_callback() {
     setcookie('active_council_id', null, -1, '/');
 }
 add_action( 'switch_back_user', 'mm365_clearcookie_callback');
+
+
+add_filter('wp_mail_content_type', function( $content_type ) {
+            return 'text/html';
+});
+
+// Get upcoming conferences count
+function get_upcoming_conferences_count() {
+    $current_user_council_id = isset($_COOKIE['active_council_id']) ? $_COOKIE['active_council_id'] : '';
+
+    $args = array(
+        'post_type' => 'mm365_conferences',
+        'posts_per_page' => -1,
+        'orderby' => 'meta_value',
+        'order' => 'ASC',
+        'meta_query' => array(
+            array(
+                'key' => 'conf_date_iso',
+                'value' => date("Y-m-d"),
+                'compare' => '>=',
+                'type' => 'DATE'
+            ),
+            array(
+                'relation' => 'OR',
+                array(
+                    'key' => 'conf_organized_council_id',
+                    'value' => $current_user_council_id,
+                    'compare' => '='
+                ),
+                array(
+                    'key' => 'conf_scope',
+                    'value' => 'national',
+                    'compare' => '='
+                ),
+            )
+        )
+    );
+
+    $conference_query = new WP_Query($args);
+    $conference_count = $conference_query->found_posts; // Get the total number of posts
+    wp_reset_postdata();
+
+    return $conference_count;
+}
+// Add a custom column to the post type
+add_filter('manage_mm365_companies_posts_columns', 'custom_add_send_mail_column');
+
+function custom_add_send_mail_column($columns) {
+    $columns['send_mail'] = 'Send Mail'; // Add a new column
+    return $columns;
+}
+add_action('manage_mm365_companies_posts_custom_column', 'custom_send_mail_column_content', 10, 2);
+
+function custom_send_mail_column_content($column, $post_id) {
+    if ($column === 'send_mail') {?>
+       <style> #send_mail {	width: 200px;} </style>
+       <?php  $mail_url = admin_url('admin-ajax.php?action=send_mail&post_id=' . $post_id);
+        echo '<a href="' . esc_url($mail_url) . '" class="button button-primary">Send Mail</a>';
+    }
+}
+
+// Handle the AJAX request to send mail
+add_action('wp_ajax_send_mail', 'custom_send_mail_function');
+
+function custom_send_mail_function() {
+    // Check if the post ID is passed
+    if (isset($_GET['post_id'])) {
+        $post_id = intval($_GET['post_id']);
+        
+        // You can get post details and the recipient's email here
+        $post_title = get_the_title($post_id);
+        $recipient_email = 'example@example.com'; // Replace with your logic
+
+        // Prepare email content
+       echo  $subject = 'Notification for: ' . $post_title;
+        $message = 'This is an automated message for post ID: ' . $post_id;
+
+        // Send the email
+        wp_mail($recipient_email, $subject, $message);
+
+        // Redirect back to the post type screen
+        wp_redirect(admin_url('edit.php?post_type=mm365_companies'));
+        exit;
+    }
+}

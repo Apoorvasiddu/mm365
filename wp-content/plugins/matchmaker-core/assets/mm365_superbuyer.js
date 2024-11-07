@@ -352,7 +352,18 @@
       var formdata = new FormData(form);
       formdata.append('action', 'add_sub_buyer');
       formdata.append('nonce', superBuyerAjax.nonce);
-      if ($(this).parsley().isValid()) {
+
+      var count_naics = $("input[name='naics_codes[]']").length;
+      if(count_naics == 0 ){
+          Notiflix.Report.failure(
+              'NAICS code is required',
+              'Please select atleast one NAICS code to continue. You can search select the code from "Find NAICS codes" field',
+              'OK',
+              );
+              
+      }
+
+      if (count_naics > 0 && $(this).parsley().isValid()) {
 
         $.ajax({
           url: superBuyerAjax.ajax_url,

@@ -661,7 +661,8 @@ class Certification
     <p>Your ' . $council_shortname . ' MBE certificate is expiring tomorrow. Please upload your updated certificate at the earliest by clicking on the below button.</p>';
     }
 
-    $body = $this->mm365_email_body($title, $content, $link, 'Upload Certificate');
+    //$body = $this->mm365_email_body($title, $content, $link, 'Upload Certificate');
+    $body = $this->mm365_email_body_template($title, $content, $link, 'Upload Certificate');
     $headers = array('Content-Type: text/html; charset=UTF-8');
     wp_mail($mail_id, $subject, $body, $headers);
 

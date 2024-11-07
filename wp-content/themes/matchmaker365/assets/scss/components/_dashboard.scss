@@ -711,3 +711,114 @@ input.parsley-error, select.parsley-error, textarea.parsley-error{
         }
     }
 }
+
+/**/
+.naics_codes_found{
+    padding:0;
+    list-style: none;
+    & li{
+        padding: 5px;
+        border-bottom: solid 1px #ccc;
+        background: aliceblue;
+        padding-right: 50px;
+        & span{
+            position: absolute;
+            right: 15px;
+            font-size: 12px;
+            padding:2px 5px;
+        }
+        &:hover{
+            background: #84b2e6;
+            cursor: pointer;
+            & span{
+                background-color: #b91010;
+                border-radius: 5px;
+                color: #fff;
+            }
+        }
+    }
+}
+
+/**/
+.mr-search-types{
+    display: flex;
+    align-items: center;
+    padding: 20px 40px;
+    flex: 1 1;
+    gap: 30px;
+    @include media-xl-min {
+        padding: 20px 80px;  
+    }
+    & .btns-block{
+        flex: 1 0 50%;
+        & h1{
+            font-size: 48px;
+            color: $theme_color;
+        }
+        & p{
+            line-height: 32px;
+            font-family: $primary_font;
+            margin-bottom: 30px;
+            color: $dark;
+        }
+        & .btn-primary{
+            border-radius: 5px;
+            border:solid 2px $theme_color;
+            background-color: #fff;
+            color: $theme_color;
+            font-weight: bold;
+            margin-right: 10px;
+            display: inline-flex;
+            align-items: center;
+            &.invert{
+                background-color: $theme_color;
+                color: #fff;
+                &:hover{
+                    background-color: #fff;
+                    color: $theme_color;
+                }
+            }
+            & svg{
+                height: 21px;
+            }
+            &:hover{
+                background-color: $theme_color;
+                color: #fff;
+            }
+        }
+
+        & .quick_match_form{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap:0 10px;
+            & input{
+                padding: 8px;
+                color: $theme_color;
+                font-size: 21px;
+                border: solid $theme_color 1px;
+                width: 75%;
+                border-radius: 10px;
+                &:focus-visible{
+                    border:  solid $theme_color 2px !important;
+                    outline:none;
+                }
+            }
+        }
+    }
+
+    & .image-block{
+        flex: 1 0 50%;
+        & img{
+            width: 100%;
+            rotate: 180deg;
+            transform: scaleX(-1);
+        }
+    }
+}
+
+#quick_matchsearchresult_companies_wrapper{
+    padding-top: 30px;
+    margin-top: 30px;
+    border-top: solid 1px #ccc;
+}

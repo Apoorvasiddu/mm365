@@ -30,7 +30,7 @@ use Mm365\CouncilManagers;
 use Mm365\CompanySearch;
 use Mm365\ManageBuyers;
 use Mm365\DataImporter;
-
+use Mm365\Mm365API;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
@@ -45,7 +45,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Description:  This plugin handles core logics and all major fuctionalities for Matchmaker365 Portal
  * Author:       V2Soft team
  * Author URI:   https://v2soft.com
- * Version:      3.0.9
+ * Version:      3.1.3
  *
  * Text Domain:  matchmaker
  * Domain Path:  languages
@@ -53,6 +53,20 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 
 /**
+ * v3.1.3
+ * NEW API Endpoint
+ * 
+ * v 3.1.2
+ * Fixed freezing issue (matchrequest editing)
+ * Drop down value change for company size
+ * 
+ * V 3.1.1
+ * Phase to changes
+ * 
+ * Version 3.1.0
+ * Algorith revision, Naics suggester
+ * 
+ * 
  * Version 3.0.9
  * New match request layout
  * 
@@ -276,5 +290,6 @@ function Mm365_init() {
   new OfflineConferences;
   new ScheduledTasks;
   new PublicFacing;
+  new Mm365API;
 
 }

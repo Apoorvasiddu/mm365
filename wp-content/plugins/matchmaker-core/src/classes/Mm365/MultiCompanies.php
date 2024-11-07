@@ -80,15 +80,15 @@ class MultiCompanies {
 
     function companyId_add_cookie( $user_login, \WP_User $user) {
 
-
+        $user = wp_get_current_user();
         if(in_array( 'business_user', (array) $user->roles )){
 
             //List of companies belog to this user
-            $all_companies = $this->users_companies($user->ID);
+            $all_companies = $this->users_companies($user->ID,'publish');
 
             if(count($all_companies) == 1){
                 //Get user's company ID
-                $comp_id = $this->get_user_company_id($user,'any');
+                $comp_id = $this->get_user_company_id($user,'publish');
                 
                 setcookie('active_company_id', $comp_id , time() + 86400, '/',""); // expire in a day
                 setcookie('active_company_name',  get_the_title($comp_id) , time() + 86400, '/',""); // expire in a day
@@ -119,7 +119,7 @@ class MultiCompanies {
      * Find all the companies belong to selected user
      * 
      */
-    function users_companies($user_id, $status = 'any'){
+    function users_companies($user_id, $status = ['publish','draft']){
 
         $args = array(  
             'author' => $user_id,

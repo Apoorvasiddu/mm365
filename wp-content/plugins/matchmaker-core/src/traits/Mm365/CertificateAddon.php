@@ -229,7 +229,9 @@ trait CertificateAddon
         <p>Hi ' . $contact_name . ',</p>
         <p>Your ' . $council_shortname . ' MBE certificate has expired! Please upload your updated certificate at the earliest by clicking on the below button.</p>';
 
-        $body = $this->mm365_email_body($title, $content, $link, 'Upload Certificate');
+        //$body = $this->mm365_email_body($title, $content, $link, 'Upload Certificate');
+        
+        $body = $this->mm365_email_body_template($title, $content, $link, 'Upload Certificate');
         $headers = array('Content-Type: text/html; charset=UTF-8');
         wp_mail($mail_id, $subject, $body, $headers);
       }
@@ -277,7 +279,8 @@ trait CertificateAddon
         break;
     }
 
-    $body = $this->mm365_email_body($title, $content, $link, 'Certificates');
+    //$body = $this->mm365_email_body($title, $content, $link, 'Certificates');
+     $body = $this->mm365_email_body_template($title, $content, $link, 'Certificates');
     $headers = array('Content-Type: text/html; charset=UTF-8');
     wp_mail($mail_id, $subject, $body, $headers);
 
@@ -376,7 +379,8 @@ trait CertificateAddon
       $content = '<p>Hi ' . $council_shortname . ' Council Manager,</p>
                 <p>There are ' . $value[0] . ' new certificates in Matchmaker365 waiting for verification. Please click on the below button to view and verify the certificates.</p>';
 
-      $body = $this->mm365_email_body($title, $content, $link, 'Certificate Verification');
+     // $body = $this->mm365_email_body($title, $content, $link, 'Certificate Verification');
+      $body = $this->mm365_email_body_template($title, $content, $link, 'Certificate Verification');
       $headers = array('Content-Type: text/html; charset=UTF-8');
       wp_mail($value[1], $subject, $body, $headers);
 

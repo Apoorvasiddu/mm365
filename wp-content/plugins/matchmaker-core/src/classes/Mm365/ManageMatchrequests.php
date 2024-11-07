@@ -793,7 +793,8 @@ class ManageMatchrequests extends Helpers
           '; 
   
 
-  $body        = $this->mm365_email_body($title,$content,$link,'Edit Match Request');
+  //$body        = $this->mm365_email_body($title,$content,$link,'Edit Match Request');
+  $body        = $this->mm365_email_body_template($title,$content,$link,'Edit Match Request');
   $headers     = array('Content-Type: text/html; charset=UTF-8');
   wp_mail( $to, $subject, $body, $headers );
 
@@ -842,7 +843,8 @@ function notfication_matchapproved($mr_id) {
                   </p>
               '; 
       $to          = $user_email;
-      $body        = $this->mm365_email_body($title,$content,$link,'View Details');
+      //$body        = $this->mm365_email_body($title,$content,$link,'View Details');
+       $body        = $this->mm365_email_body_template($title,$content,$link,'View Details');
       $headers     = array('Content-Type: text/html; charset=UTF-8');
       wp_mail( $to, $subject, $body, $headers );
 

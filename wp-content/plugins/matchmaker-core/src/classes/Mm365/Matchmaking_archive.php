@@ -11,45 +11,11 @@ class Matchmaking extends Helpers
 {
     use MatchrequestAddon;
     use NotificationAddon;
-    use CompaniesAddon;
-    use CertificateAddon;
 
     function __construct()
     {
-
-        add_action('wp_enqueue_scripts', array($this, 'assets'), 11);
-
         add_filter('mm365_match_findsuppliers', array($this, 'find_matchingcomapnies'), 1 , 1);
-
-        add_action('wp_ajax_mm365_quick_match', [$this, 'quick_search']);
-
-        add_action('wp_ajax_mm365_qs_to_matchrequest', [$this, 'quicksearch_to_matchrequest']);
-        
     }
-
-
-
-  /**
-   * Assets
-   * 
-   */
-
-   function assets()
-   {
- 
-     $localize= array(
-       'ajax_url' => admin_url('admin-ajax.php'),
-       'nonce' => wp_create_nonce("mm365_matchrequest_quicksearch"),
-     );
-     wp_register_script('matchmaking_qucik', plugins_url('matchmaker-core/assets/mm365_quick_matchrequest.js'),['jquery'] ,false,true );
-     wp_localize_script('matchmaking_qucik', 'quickMatchAjax',$localize);
-     wp_enqueue_script('matchmaking_qucik');
- 
-   }
-
-
-
-
 
     /**--------------------------------------------------
       * Find the matches
@@ -83,7 +49,6 @@ class Matchmaking extends Helpers
 
     function find_matchingcomapnies($mr_id)
     {
-        //echo "<pre>";
 
         //Match Parameters score values
         $mp_naicscode = $this->mm365_get_option('mm365_match_parameter_naicscode');
@@ -106,7 +71,6 @@ class Matchmaking extends Helpers
 
         //results count
         $mp_results_count = $this->mm365_get_option('mm365_match_parameter_resultscount');
-   
 
 
         //Match request users submitted Parameters
@@ -153,7 +117,7 @@ class Matchmaking extends Helpers
         $naics_matching_args = array(
             'post_type'  => 'mm365_companies',
             'posts_per_page' => -1,
-            'meta_query' => array(
+             'meta_query' => array(
                           array(
                               'key'     => 'mm365_naics_codes',
                               'value'   =>  array_filter( $naics_codes, 'strlen' ),
@@ -171,20 +135,18 @@ class Matchmaking extends Helpers
                  array_push($companies_with_matching_naics, array('score' => $mp_naicscode,'post_id' => get_the_ID(),));
             endwhile;
            
-        }
-        // else{
+        }else{
           
-        //     //Abort
-        //     update_post_meta($mr_id, 'mm365_matchrequest_status', 'nomatch');
-        //     update_post_meta($mr_id, 'mm365_matched_companies', '');
+            //Abort
+            update_post_meta($mr_id, 'mm365_matchrequest_status', 'nomatch');
+            update_post_meta($mr_id, 'mm365_matched_companies', '');
 
-        //     //Email the user about no match
-        //     $this->mm365_notfication_nomatch($mr_id);
-        //     return true;
+            //Email the user about no match
+            $this->mm365_notfication_nomatch($mr_id);
+            return true;
 
-        // }
+        }
 
-//print_r($companies_with_matching_naics);
 
         /**
          * 
@@ -204,8 +166,6 @@ class Matchmaking extends Helpers
             $purged .= '' . $this->keyword_cleanser($keyword) . ' ';
             $strict .= '"' . $this->keyword_cleanser($keyword) . '" ';
         }
-
-       
 
       
 
@@ -230,17 +190,17 @@ class Matchmaking extends Helpers
         //Search in company description
         $sql_description = "SELECT MATCH(meta_value) AGAINST('" . $purged . "') AS score, post_id FROM " . $wpdb->prefix . "postmeta 
                         WHERE MATCH(meta_value) AGAINST('" . $purged . "') AND  `meta_key`= 'mm365_company_description'
-                        ORDER BY SCORE DESC LIMIT 999999999;";
+                        AND post_id IN (" . implode(",", array_map("intval", $naics_code_matched)) . ") ORDER BY SCORE DESC LIMIT " . $mp_results_count . ";";
 
         //Search in post title
-        // $sql_title = "SELECT  MATCH(post_title) AGAINST('" . $purged . "') AS score, ID as post_id
-        //                 FROM " . $wpdb->prefix . "posts WHERE post_type = 'mm365_companies' AND ( MATCH(post_title) AGAINST('" . $purged . "') >1) 
-        //                   ORDER BY SCORE DESC LIMIT 9999999" ;
+        $sql_title = "SELECT  MATCH(post_title) AGAINST('" . $purged . "') AS score, ID as post_id
+                        FROM " . $wpdb->prefix . "posts WHERE post_type = 'mm365_companies' AND ( MATCH(post_title) AGAINST('" . $purged . "') >1) 
+                        AND ID  IN (" . implode(",", array_map("intval", $naics_code_matched)) . ")  ORDER BY SCORE DESC LIMIT 9999999" ;
 
         //Search keywords as phrases
         $sql_phrase_search = "SELECT MATCH(meta_value) AGAINST('" . $strict . "') AS score, post_id FROM " . $wpdb->prefix . "postmeta 
        WHERE MATCH(meta_value) AGAINST('" . $strict . "') AND  `meta_key`= 'mm365_company_description' 
-        
+       AND post_id  IN (" . implode(",", array_map("intval", $naics_code_matched)) . ") 
        ORDER BY SCORE DESC LIMIT 9999999";
 
 
@@ -249,11 +209,10 @@ class Matchmaking extends Helpers
         $company_desc_results = $wpdb->get_results($sql_description);
 
         //Company title
-        //$company_title_results = $wpdb->get_results($sql_title);
+        $company_title_results = $wpdb->get_results($sql_title);
 
         //Company description strict mode
         $company_desc_strict_results = $wpdb->get_results($sql_phrase_search);
-
 
         /**
          * 
@@ -265,51 +224,17 @@ class Matchmaking extends Helpers
 
 
         //Keyword match combined (Comapny description and title ) - $company_desc_results,$company_title_results,$company_desc_strict_results
-        $all_keyword_matahced_companies = array_merge($company_desc_results, $company_desc_strict_results);
-        
-        
+        $all_keyword_matahced_companies = array_merge($company_title_results,$company_desc_results,$company_desc_strict_results);
         $keywordscores_array = json_decode(json_encode($all_keyword_matahced_companies), true);
-       
 
-        // Initialize an empty array to store summed scores
-        $summedArray = [];
+   
 
-        // Iterate through the original array
-        foreach ($keywordscores_array as $item) {
-            $post_id = $item['post_id'];
-            $score = $item['score'];
-            
-            // If post_id already exists in $summedArray, add to the existing score
-            if (isset($summedArray[$post_id])) {
-                // Increment the score, but ensure it does not exceed limit
-                $summedArray[$post_id]['score'] += $score;
-                if ($summedArray[$post_id]['score'] > $mp_companydescription) {
-                    $summedArray[$post_id]['score'] = $mp_companydescription;
-                }
-            } else {
-                // If post_id doesn't exist, initialize it with current score
-               
-                    $summedArray[$post_id] = [
-                        'post_id' => $post_id,
-                        'score' => min($score, $mp_companydescription) // Cap the initial score to a maximum of limit
-                    ];
-               
-            }
-        }
-
-        // Convert the associative array to indexed array if needed
-        $companyDescriptionScores = array_values($summedArray);
-
-        // Output the final consolidated array
-        //echo "---";
-        //print_r($companyDescriptionScores); die();
+    
 
 
-        $primary_result_set = array_merge($companyDescriptionScores, $companies_with_matching_naics);
+        $primary_result_set = $this->mergeCompanyArrays($keywordscores_array, $companies_with_matching_naics);
 
         //Remove all company records which doesnot have a subscription( mm365_subscription_status  - expired/not_subscribed)
-
-        //print_r($primary_result_set); die();
     
 
          $tally_keyword_naicscore = array();
@@ -321,14 +246,14 @@ class Matchmaking extends Helpers
             
             // If the post_id is already in the tally array, add the score to it
             if (isset($tally_keyword_naicscore[$post_id])) {
-                $tally_keyword_naicscore[$post_id] += round($score,2);
+                $tally_keyword_naicscore[$post_id] += $score;
             } else {
                 // Otherwise, initialize the tally for this post_id
-                $tally_keyword_naicscore[$post_id] = round($score,2);
+                $tally_keyword_naicscore[$post_id] = $score;
             }
         }
 
-      //print_r($tally_keyword_naicscore); die();
+
 
         //Finding all the companies to look for
         $max_score = 0;
@@ -356,8 +281,6 @@ class Matchmaking extends Helpers
 
             //echo $match_percentage."<br/>";
             if ($match_percentage > 0) {
-
-                //echo $match_percentage."<br/>";
                 //array_push($score_map, array("c"=>$key->post_id,"s"=>($match_percentage * $mp_companydescription / 100)));
                 array_push($combined_score, array("c" => $key, "s" => $mappedScore));
                 array_push($keyword_score, array("c" => $key, "s" => $mappedScore));
@@ -365,7 +288,7 @@ class Matchmaking extends Helpers
                 array_push($possible_matches, $key);
             }
         }
-       
+        
    
        
         /*------------------------------------------------ADDITIONAL META SEARCH --------------------------------------------- */
@@ -492,8 +415,6 @@ class Matchmaking extends Helpers
          * be searched in to the companies that has matching keywords in description or title
          * 
          */
-
-         //print_r($possible_matches); die();
 
         if (count($possible_matches) > 0){
            
@@ -829,6 +750,7 @@ class Matchmaking extends Helpers
 
 
 
+
         //Approval type based switching
         $newArray = array();
         if (!empty($score_map)) {
@@ -857,9 +779,7 @@ class Matchmaking extends Helpers
         }
 
         //Limiting results - optional
-        $result_array = array_slice($newArray, 0,  $mp_results_count);
-
-   
+        $result_array = $newArray;
 
   
 
@@ -930,192 +850,11 @@ class Matchmaking extends Helpers
                 '; 
         
     
-        //$body        = $this->mm365_email_body($title,$content,$link,'Edit Match Request');
-        $body        = $this->mm365_email_body_template($title,$content,$link,'Edit Match Request');        
+        $body        = $this->mm365_email_body($title,$content,$link,'Edit Match Request');
         $headers     = array('Content-Type: text/html; charset=UTF-8');
         wp_mail( $to, $subject, $body, $headers );
     
     
-    }
-
-
-    /**
-     * Quick seach depends on company name
-     * Search against the title to get the resulsts
-     * 
-     * 
-     */
-
-    function quick_search()
-    {
-
-        //Verify nonce
-        $nonce = $_POST['nonce'];
-
-        if (!wp_verify_nonce($nonce, 'mm365_matchrequest_quicksearch')) {
-            echo '0';
-            die();
-        }
-
-        //Search in to company name
-        $keyword = $_POST['company_name'];
-
-        $companies = new \WP_Query(
-            [
-                'fields' => 'ids',
-                'post_type' => 'mm365_companies',
-                'posts_per_page' => -1,
-                'post_status' => 'publish',
-                'post__not_in' =>[$_COOKIE['active_company_id']],
-                'meta_query' => [
-                    'relation' => 'AND',
-                    [
-                        'key' => 'mm365_company_name',
-                        'value' => $keyword,
-                        'compare' => 'LIKE'
-                    ],
-                    [
-                        'key' => 'mm365_service_type',
-                        'value' => 'seller',
-                        'compare' => '='
-                    ]
-                ]
-            ]
-        );
-     
-
-        //Return results
-        if ( !empty($companies) AND $companies->have_posts() ) {
-
-            echo '
-            <div class="alert alert-info" role="alert">Please select the companies you want to match with by checking the boxes and clicking “Make Match Request”. Upon making the match request(s), you can view full company profiles.</div>
-            <table id="quick_matchsearchresult_companies" class="mm365datatable-list table table-striped"  cellspacing="0" width="100%" data-intro="List of companies found">
-            <thead class="thead-dark">
-              <tr>
-              <th class="no-sort" width="5%" data-intro="Select"></th>
-                <th class="no-sort" width="20%" data-intro="Company name"><h6>Company</h6></th>
-                <th width="35%" data-intro="Company description" class="no-sort" ><h6>Description</h6></th>
-                <th class="no-sort" data-intro="Associated Council"><h6>NAICS codes</h6></th>
-                <th data-intro="Products or services offered by the companies" class="no-sort" ><h6>Products or Services</h6></th>
-                <th class="no-sort" data-intro="Associated Council"><h6>Council</h6></th>
-                <!--<th class="no-sort" data-intro="Contact information" ><h6>Contact</h6></th>-->
-                <th class="no-sort" data-intro="Company\'s address location"><h6>Location</h6></th>                  
-              </tr>
-            </thead>
-            <tbody>';
-
-
-            while ( $companies->have_posts() ) {
-                $services = array();
-                echo "<tr>";
-                $companies->the_post();
-
-                $current_council = get_post_meta( get_the_ID(), 'mm365_company_council', true );
-                $service_type = get_post_meta( get_the_ID(), 'mm365_service_type', true );
-                $show_type = $this->get_company_service_type($service_type);
-
-                echo '<td class="text-center">';
-                  echo '<div class="md-checkbox md-checkbox-inline">
-                    <input id="cb-qs-'.get_the_ID().'" data-cmpid="'.get_the_ID().'" type="checkbox"
-                      class="approve-cb-inline" name="matched_comp_id[]"  value="'.get_the_ID().'">
-                    <label for="cb-qs-'.get_the_ID().'"></label>
-                  </div>
-              </td>';
-
-
-                echo "<td>".$this->get_certified_badge(get_the_ID(), true)."<strong>".get_the_title()."</strong></td>";
-                $company_info = get_post_meta(get_the_ID(),'mm365_company_description', true); 
-                echo "<td>"; 
-                 echo strlen($company_info) > 250 ? substr($company_info,0,250)."..." : $company_info;
-                echo"</td>";
-                echo "<td>".implode(", ",get_post_meta(get_the_ID(),'mm365_naics_codes'))."</td>";
-                echo "<td>"; 
-                    foreach ((get_post_meta( get_the_ID(), 'mm365_services')) as $key => $value){
-                        $services[] = $value;
-                    }
-                    if(!empty($services)):echo implode( ', ', $services );  else: echo "-"; endif;
-                echo"</td>";
-                echo "<td>".$this->get_council_info($current_council)."</td>";
-                
-                // echo "<td>";
-                //  echo '<div class="intable_span">'.get_post_meta( get_the_ID(), 'mm365_contact_person', true ).'</div>';
-                //  echo '<div class="intable_span">'.get_post_meta( get_the_ID(), 'mm365_company_email', true ).'</div>';
-                //  echo '<div class="intable_span">'.get_post_meta( get_the_ID(), 'mm365_company_phone', true ).'</div>';
-                // echo "</td>";
-                echo "<td>".$this->get_cityname(get_post_meta( get_the_ID(), 'mm365_company_city', true )).$this->get_statename(get_post_meta( get_the_ID(), 'mm365_company_state', true )).", ".$this->get_countryname(get_post_meta( get_the_ID(), 'mm365_company_country', true ))."</td>";
-                echo "</tr>";
-            }
-
-            echo '</tbody>
-            </table>';
-            
-        }else{
-            echo 'no-match';
-        }
-        wp_die();
-    }
-
-    /**
-     * Quick search results to match request conversion
-     * 
-     * 
-     */
-    function quicksearch_to_matchrequest(){
-
-        $companies_matched = $_POST['selected_companies'];
-
-        $success_redirect = $_POST['redirect'];
-
-        $selected_companies = [];
-        foreach($companies_matched AS $cmp_id => $state){
-            if($state == 'true'){
-                array_push( $selected_companies, [substr($cmp_id, 6),1]);
-            }
-        }
-        $post_id = null;
-        //Create Match request
-        if(count($selected_companies) > 0){
-            $keyword = $_POST['keyword'];
-            $requester_cmp = $_POST['requester'];
-            $requester_council = $_POST['council'];
-            $requester_id = $_POST['user_id'];
-
-            $post_information = array(
-                'post_title' => wp_strip_all_tags('MR-QS-' . sanitize_text_field($_POST['keyword']) . "-" . $requester_id),
-                'meta_input' => array(
-                  'mm365_services_details' => sanitize_text_field($keyword),
-                  'mm365_approval_type' => "no",
-                  'mm365_location_for_search' => 'Any Country, Any States',
-                  'mm365_requester_id' => sanitize_text_field($requester_id),
-                  'mm365_requester_company_id' => sanitize_text_field($requester_cmp),
-                  'mm365_requester_company_name' => get_the_title($requester_cmp),
-                  'mm365_requester_company_council' => sanitize_text_field($requester_council),
-                  'mm365_matchrequest_status' => 'auto-approved',
-                  'mm365_matched_companies_approved_time' => time(),
-                  'mm365_matched_companies' => maybe_serialize($selected_companies)
-                ),
-                'post_type' => 'mm365_matchrequests',
-                'post_status' => 'publish',
-                'post_author' => $requester_id
-              );
-          
-              $post_id = wp_insert_post($post_information);
-            //Apped updated time
-            $modefied_time = get_the_modified_time("m/d/Y h:i A", $post_id);
-            $modefied_time_iso = get_the_modified_time("Y-m-d", $post_id);
-            update_post_meta($post_id, 'mm365_matched_companies_last_updated', $modefied_time);
-            update_post_meta($post_id, 'mm365_matched_companies_last_updated_isodate', $modefied_time_iso);
-        }
-
-            //Get ID
-            if($post_id != null){
-                echo $success_redirect.$post_id;
-            }else{
-                echo "FAIL";
-            }
-
-        wp_die();
-
     }
 
 }

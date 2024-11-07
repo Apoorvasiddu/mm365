@@ -124,7 +124,7 @@ class Helpers
             $wp_posts = get_posts($args);
 
             
-            if(!count($wp_posts)) {
+            if(count($wp_posts)==0) {
                 //If user has no companies
                 wp_redirect(site_url()."/".$redirect_slug);
                 exit;
@@ -450,14 +450,22 @@ class Helpers
  
          global $wpdb;
 
-         if(strlen($input) > 3){
+         if(strlen($input) > 1){
 
+            $my_query = 'SELECT * FROM '.$wpdb->prefix.'2017_naics_codes WHERE `code` = "'.$input.'" OR `title` LIKE "%'.$input.'%" AND code  regexp \'[0-9]{6}\'';
             //Code validation
-            $find_codes = $wpdb->get_results( "SELECT * FROM ".$wpdb->prefix."2017_naics_codes WHERE code LIKE '%$input%' OR title LIKE '%$input%'" );
+            $find_codes = $wpdb->get_results($my_query);
         
             //Search suggestion
-            foreach($find_codes as $code){
-                echo "<li>$code->code-$code->title</li>";
+            if(count($find_codes) > 0){
+                echo "<ul class='naics_codes_found'>";
+                foreach($find_codes as $naic){
+                    if(strlen($naic->code) > 5)
+                    echo "<li data-naic='$naic->code'>$naic->code - $naic->title <span>SELECT</span></li>";
+                }
+                echo "</ul>";
+            }else{
+                echo "Invalid code or no records found!";
             }
          }
      

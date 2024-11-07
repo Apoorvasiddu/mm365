@@ -36,32 +36,32 @@
 
         toValidate.on('keyup','input', function () {
   
-            $.ajax({
-                url: helperAjax.ajax_url,
-                data: {
-                    action: 'validate_naics_code',
-                    nonce:helperAjax.nonce,
-                    naics_to_validate: $(this).val()
-                },
-                type: 'POST', 
-                success: function (data) {
-                    if(data == 'Invalid Code'){
-                      $('input:focus').css('border-color','red')
-                      $('input:focus').next('.naic-info').html('Invalid NAICS code')
-                      $('input:focus').next('.naic-info').addClass('error')
-                      $('input:focus').next('.naic-info').removeClass('valid')
-                    }else{
-                        $('input:focus').css('border-color','green')
-                        //$('input').next('.naic-info').html(data)
-                        $('input:focus').next('.naic-info').html(data)
-                        $('input:focus').next('.naic-info').removeClass('error')
-                        $('input:focus').next('.naic-info').addClass('valid')
+            // $.ajax({
+            //     url: helperAjax.ajax_url,
+            //     data: {
+            //         action: 'validate_naics_code',
+            //         nonce:helperAjax.nonce,
+            //         naics_to_validate: $(this).val()
+            //     },
+            //     type: 'POST', 
+            //     success: function (data) {
+            //         if(data == 'Invalid Code'){
+            //           $('input:focus').css('border-color','red')
+            //           $('input:focus').next('.naic-info').html('Invalid NAICS code')
+            //           $('input:focus').next('.naic-info').addClass('error')
+            //           $('input:focus').next('.naic-info').removeClass('valid')
+            //         }else{
+            //             $('input:focus').css('border-color','green')
+            //             //$('input').next('.naic-info').html(data)
+            //             $('input:focus').next('.naic-info').html(data)
+            //             $('input:focus').next('.naic-info').removeClass('error')
+            //             $('input:focus').next('.naic-info').addClass('valid')
 
-                    }
+            //         }
                    
-                }
-            });
-
+            //     }
+            // });
+            var container = $('.naic-suggested');
             $.ajax({
                 url: helperAjax.ajax_url,
                 data: {
@@ -71,41 +71,34 @@
                 },
                 type: 'POST', 
                 success: function (data) {
+
+                    container.show();
+                    
                     $('input:focus').nextAll('.naic-suggested').html(data)
+                    $('.naic-suggested li').on('click',function(){
+                        $('.naics-input').val(null);
+                        var number = $(this).data('naic');
+
+                        let naics_data = '<section class="naics_remove"><div class="form-row  form-group"><div class="col"><input readonly value="' + number + '" id="mr_naics" class="form-control" type="number" name="naics_codes[]"></div><div class="col-2 d-flex align-items-start naics-codes-btn"><a href="#" class="remove-naics-code plus-btn">-</a></div></div></section>';
+
+                        $('.naics-codes-dynamic').append(naics_data);
+                    });
                     
                 }
             });
 
+            $(document).mouseup(function(e) 
+            {
+               // if the target of the click isn't the container nor a descendant of the container
+               if (!container.is(e.target) && container.has(e.target).length === 0) 
+               {
+                   container.hide();
+               }
+           });
+
 
         });
 
-        //Auto Complete
-        // $(".naics-input").autocomplete({
-        //       source: function( request, response ) {
-        //         $.ajax({
-        //           url: helperAjax.ajax_url,
-        //           dataType: "jsonp",
-        //           data: {
-        //             q: request.term,
-        //             action: 'suggest_naics_code',
-        //           },
-        //           success: function( data ) {
-        //             response( data );
-        //           }
-        //         });
-        //       },
-        //       minLength: 3,
-        //       select: function( event, ui ) {
-              
-        //       },
-        //       open: function() {
-        //         $( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
-        //       },
-        //       close: function() {
-        //         $( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
-        //       }
-        //     });
-        
   
 
         /* End Editing */

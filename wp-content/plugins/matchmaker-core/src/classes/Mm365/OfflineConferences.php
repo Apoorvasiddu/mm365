@@ -102,7 +102,7 @@ class OfflineConferences
         $conf_meeting_venue = sanitize_text_field($_POST['meeting_venue']);
         $conf_map_link = sanitize_text_field($_POST['map_link']);
         $conf_event_amneties = sanitize_text_field($_POST['event_amneties']);
-        $conf_maximum_deligates = sanitize_text_field($_POST['maximum_deligates']);
+        $conf_maximum_deligates = 800; //sanitize_text_field($_POST['maximum_deligates']);
         $conf_primary_contact_person = sanitize_text_field($_POST['primary_contact_person']);
         $conf_contact_phone_number = sanitize_text_field($_POST['contact_phone_number']);
 
@@ -405,7 +405,7 @@ class OfflineConferences
              ' . get_post_field('post_content', $conf_id) . '
             </div>
            </div>
-   
+   <!--
            <div class="form-row form-group">
              <div class="col-6">
                <label for="">Approximate Value of Business</label><br/>
@@ -423,7 +423,7 @@ class OfflineConferences
              <span class="text-capitalize badge ' . get_post_meta($conf_id, 'conf_scope', true) . '">' . get_post_meta($conf_id, 'conf_scope', true) . '</span>
            </div>
          </div>
-   
+       -->
            <div class="pto-30">
             <h5>Participating Buyer(s)</h5><hr>
            </div>
@@ -477,19 +477,21 @@ class OfflineConferences
                            
                echo '</div>
            </div>
+           <!--
            <div class="form-row form-group">
                <div class="col-12">
                      <label for="">Event Amenities</label><br/>
                      ' . get_post_meta($conf_id, 'conf_event_amneties', true) . '  
                </div>
            </div>
-   
+   -->
            <div class="form-row form-group">
+            <!--
                <div class="col-5">
                            <label for="">Maximum Occupancy </label><br/>
                            ' . get_post_meta($conf_id, 'conf_maximum_deligates', true) . '
    
-               </div>
+               </div> -->
                <div class="col-5">
                    <label for="">Registration Closing Date </label><br/>
                    ' . get_post_meta($conf_id, 'conf_registration_closing_date', true) . '
@@ -830,7 +832,7 @@ class OfflineConferences
 
         $content     .= '<p>Please click on the below button to login and see the details about conference</p>'; 
         
-        $body        = $this->mm365_email_body($title,$content,$link,'Conferece Participation Application');
+        $body        = $this->mm365_email_body_template_meetings($title,$content,$link,'Conferece Participation Application');
         $headers     = array('Content-Type: text/html; charset=UTF-8');
         wp_mail( $to, $subject, $body, $headers );
     }

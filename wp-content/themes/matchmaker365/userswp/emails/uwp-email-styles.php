@@ -3,8 +3,8 @@
 if ( !defined('ABSPATH') )
     die('-1');
 
-// Load colours
-$bg              = uwp_get_option( 'email_background_color', '#f5f5f5' );
+// Load colours #f5f5f5
+$bg              = uwp_get_option( 'email_background_color', '#0078d4' );
 $body            = uwp_get_option( 'email_body_background_color', '#fdfdfd' );
 $base            = uwp_get_option( 'email_base_color', '#1e73be' );
 $base_text       = uwp_light_or_dark( $base, '#202020', '#ffffff' );
@@ -49,6 +49,9 @@ if ( empty( $footer_bg_darker_10 ) ) { $footer_bg_darker_10 = 'transparent'; }
     margin: auto;
     max-width: 900px;
     width: 100%;
+}
+#template_header_logo {
+	text-align: left;
 }
 #template_body {
     background-color: <?php echo esc_attr( $body ); ?>;

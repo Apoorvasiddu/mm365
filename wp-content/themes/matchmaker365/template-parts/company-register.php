@@ -41,9 +41,18 @@ $user = wp_get_current_user();
     </div>
 </div>
 <div class="col-12 d-block d-sm-none pbo-30"></div>
+
+
+<div class="form-row form-group">
+ 
+                              
+                        </div>
+
+
+
 <div class="form-row form-group">
     <!-- NAICS Codes -->
-    <div class="col-lg-4"
+    <!-- <div class="col-lg-4"
         data-intro="The North American Industry Classification System (NAICS). If you are not sure about the NAICS codes, find them from the link below">
         <label for="">NAICS code<span>*</span></small>
         </label>
@@ -58,21 +67,46 @@ $user = wp_get_current_user();
             </div>
         </section>
         <section class="naics-codes-dynamic"></section>
-        <label for=""><small>Please enter only one NAICS code per row</small>
+           <label for=""><small>Please enter only one NAICS code per row</small>
         </label>
         
         <a class="external_link" target="_blank" href="https://www.naics.com/search/"><span>Search for NAICS code</span>
             &nbsp;<img src="<?php echo get_template_directory_uri() ?>/assets/images/share.svg" alt=""></a>
-    </div>
+    </div> -->
+
+    <div id="basicSearchFields" class="col-lg-4">
+                                    <label for="">Find NAICS codes<br/>
+                                          </label>
+                                   
+                                    <section  class="naics-codes">
+                                          <div  class="form-row">
+                                                <div class="col naics-input-box">
+                                                      <input class="form-control naics-input" type="text" min="10"
+                                                            max="999999" name="naics_code" placeholder="search and select naics code" >
+                                                            <p class="naic-info"></p>
+                                                            <div class="naic-suggested"></div>
+                                                </div>
+                                          </div>
+                                    </section>
+                                   <label><small>Search by category name or NAICS code then click the list to add</small></label>
+                                    <a class="external_link" target="_blank" href="https://www.naics.com/search/"><span>Search for NAICS code</span> &nbsp;<img src="<?php echo get_template_directory_uri() ?>/assets/images/share.svg" alt=""></a>
+                              </div>
+                              <div class="col-lg-3">
+                              <label for="">Selected NAICS codes<span>*</span><br/>
+                                         
+                                    </label>
+                                    <section class="naics-codes-dynamic"></section>
+                                    
+                              </div>
 
 
-    <div class="col-lg-4" data-intro="Name of the person to contact for the business needs">
+    <div class="col-lg-2" data-intro="Name of the person to contact for the business needs">
         <label for="">Contact person<span>*</span></label>
         <input placeholder="Please enter your full name" class="form-control" pattern="[a-zA-Z\s]+" minlength="4"
             type="text" required name="contact_person">
     </div>
     <div class="col-12 d-block d-sm-none pbo-30"></div>
-    <div class="col-lg-4" data-intro="Company's address. If there are multiple addresses add the primary address here">
+    <div class="col-lg-3" data-intro="Company's address. If there are multiple addresses add the primary address here">
         <label for="">Company address<span>*</span></label>
         <textarea placeholder="Please enter your address" required class="form-control" name="company_address" id=""
             cols="30" rows="1"></textarea>
@@ -334,18 +368,15 @@ $user = wp_get_current_user();
     <div class="col-lg-4" data-intro="Size of your company. Valuatation based on annual sales in US Dollars">
         <label for="">Size of company <small>(Annual sales in US Dollars)</small></label>
         <select name="size_of_company" id="" class="form-control  mm365-single">
-            <option value="">-select-</option>
-            <option>
-                <$100,000 
-            </option>
-            <option>$100,000 - $500,000</option>
-            <option>$500,000 - $1M</option>
-            <option>$1M - $5M</option>
-            <option>$5M - $50M</option>
-            <option>$50M - $200M</option>
-            <option>$200M - $500M</option>
-            <option>$500M - $1B</option>
-            <option>$1B+</option>
+        <option value="">-Select-</option>
+        <option>Less than $100,000</option>
+              <option>$100,000 - $500,000</option>
+              <option>$500,000 - $1,000,000</option>
+              <option>$1M- $5M</option>
+              <option>$5M-$10M</option>
+               <option>$10M-$25M</option>
+                <option>$25M-$50M</option>
+                 <option>Greater than $50,000,000</option>
         </select>
     </div>
     <div class="col-12 d-block d-sm-none pbo-30"></div>

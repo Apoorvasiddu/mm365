@@ -373,7 +373,8 @@ trait MeetingAddon
                   ' . $additional_cont;
 
         $to = $attendee_email.$attendee_alt_email;
-        $body = $this->mm365_email_body($title, $content, $link, 'My Meeting Invites');
+       // $body = $this->mm365_email_body($title, $content, $link, 'My Meeting Invites');
+         $body = $this->mm365_email_body_template_meetings($title, $content, $link, 'My Meeting Invites');
         $headers = array('Content-Type: text/html; charset=UTF-8');
         //Trigger email
         wp_mail($to, $subject, $body, $headers);
@@ -395,7 +396,8 @@ trait MeetingAddon
                       <p>Hi ' . $proposer_details[1] . ',</p>' . $additional_cont;
 
         $to = $proposer_details[2];
-        $body = $this->mm365_email_body($title, $content, $link, 'My Meetings');
+        //$body = $this->mm365_email_body($title, $content, $link, 'My Meetings');
+         $body = $this->mm365_email_body_template_meetings($title, $content, $link, 'My Meetings');
         $headers = array('Content-Type: text/html; charset=UTF-8');
         //Trigger email
         wp_mail($to, $subject, $body, $headers);

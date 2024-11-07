@@ -134,7 +134,7 @@ get_header();
 
         <!-- F2 -->
 
-        <div class="form-row form-group">
+        <div class="form-row form-group" style="margin-top: 15px;">
           <div class="col-lg-4" data-intro="Company services or products which the buyer was looking for">
             <label for="">Company services or products</label>
             <select name="services[]" id="services" multiple class="form-control mm365-multicheck">
@@ -235,17 +235,14 @@ get_header();
               <label for="">Size of company</label>
               <select name="size_of_company" id="" class="form-control mm365-single">
                 <option value="">-Select-</option>
-                <option>
-                  <$100,000 
-                </option>
-                <option>$100,000 - $500,000</option>
-                <option>$500,000 - $1M</option>
-                <option>$1M - $5M</option>
-                <option>$5M - $50M</option>
-                <option>$50M - $200M</option>
-                <option>$200M - $500M</option>
-                <option>$500M - $1B</option>
-                <option>$1B+</option>
+               <option>Less than $100,000</option>
+              <option>$100,000 - $500,000</option>
+              <option>$500,000 - $1,000,000</option>
+              <option>$1M- $5M</option>
+              <option>$5M-$10M</option>
+               <option>$10M-$25M</option>
+               <option>$25M-$50M</option>
+              <option>Greater than $50,000,000</option>
 
               </select>
             </div>
@@ -267,7 +264,7 @@ get_header();
 
           <!-- f4 -->
           <div class="form-row form-group">
-            <div class="col-lg-4"
+            <!-- <div class="col-lg-4"
               data-intro="If buyers preferred  specific NAICS codes, use this filter to identify such requests">
               <label for="">NAICS code<br /><small>Please enter only one NAICS code per row</small></label>
               <section class="naics-codes">
@@ -284,7 +281,34 @@ get_header();
                   code</span> &nbsp;<img src="<?php echo get_template_directory_uri() ?>/assets/images/share.svg"
                   alt=""></a>
 
-            </div>
+            </div> -->
+
+            <div id="basicSearchFields" class="col-lg-4">
+                                    <label for="">Find NAICS codes<br/>
+                                          </label>
+                                   
+                                    <section  class="naics-codes">
+                                          <div  class="form-row">
+                                                <div class="col naics-input-box">
+                                                      <input class="form-control naics-input " type="text" min="10"
+                                                            max="999999" name="naics_code" placeholder="search and select naics code" >
+                                                            <p class="naic-info"></p>
+                                                            <div class="naic-suggested"></div>
+                                                </div>
+                                          </div>
+                                    </section>
+                                   <label><small>Search by category name or NAICS code then click the list to add</small></label>
+                                     <a class="external_link" target="_blank" href="https://www.naics.com/search/"><span>Search for NAICS code</span> &nbsp;<img src="<?php echo get_template_directory_uri() ?>/assets/images/share.svg" alt=""></a>
+                              </div>
+                              <div class="col-lg-3">
+                              <label for="">Selected NAICS codes<br/>
+                                         
+                                    </label>
+                                    <section class="naics-codes-dynamic"></section>
+                                   
+                              </div>
+
+
             <div class="col-lg-4"
               data-intro="If buyers preferred a suppliers looking for specific international assisstance from council. Use this filter to identify such requests">
               <label for="">Looking for international assistance<br /><small>International assistance offered by
@@ -297,7 +321,7 @@ get_header();
                   ?>
               </select>
             </div>
-            <div class="col-lg-4" data-intro="Filter match requests submitted by the buyers from a specific council">
+            <div class="col-lg-4" data-intro="Filter match requests submitted by the buyers from a specific council" style="margin-top:20px;">
               <label id="councilFilter_label" for="councilFilter">Council<br /><small>Select council</small></label>
               <select id="councilFilter" name="council_filter" class="form-control">
                 <option value="">All Councils</option>

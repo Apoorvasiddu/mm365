@@ -642,6 +642,90 @@ class Themeoptions{
                         'required' => true,
                     ),
                 ));
+       /**
+             * ---------------------------------------
+             * Emails templates images
+             * ---------------------------------------
+             */           
+  $cmb_options->add_field( array(
+                'name' => 'Emails Templates',
+                'desc' => ' Managing email templates Images',
+                'type' => 'title',
+                'id'   => 'emails_templates_images'
+               ));
+     
+            
+   $cmb_options->add_field( array(
+    'name'    => 'Header Image',
+    'desc'    => 'Upload an image or enter an URL.',
+    'id'      => 'email_header_logo_image',
+    'type'    => 'file',
+    // Optional:
+    'options' => array(
+        'url' => false, 
+    ),
+    'text'    => array(
+        'add_upload_file_text' => ' Upload Image' // Change upload button text. Default: "Add or Upload File"
+    ),
+    // query_args are passed to wp.media's library query.
+    'query_args' => array(
+         'type' => array(
+        'image/gif',
+         'image/jpeg',
+         'image/png',
+        ),
+    ),
+    'preview_size' => 'large', // Image size to use when previewing in the admin.
+) );   
+
+
+  $cmb_options->add_field( array(
+    'name'    => 'Body Image',
+    'desc'    => 'Upload an image or enter an URL.',
+    'id'      => 'email_body_logo_image',
+    'type'    => 'file',
+    // Optional:
+    'options' => array(
+        'url' => false, 
+    ),
+    'text'    => array(
+        'add_upload_file_text' => ' Upload Image' // Change upload button text. Default: "Add or Upload File"
+    ),
+    // query_args are passed to wp.media's library query.
+    'query_args' => array(
+         'type' => array(
+        'image/gif',
+         'image/jpeg',
+         'image/png',
+        ),
+    ),
+    'preview_size' => 'large', // Image size to use when previewing in the admin.
+) );
+
+  $cmb_options->add_field( array(
+    'name'    => 'MMSDC Logo',
+    'desc'    => 'Upload an image or enter an URL.',
+    'id'      => 'email_mmsdc_logo_image',
+    'type'    => 'file',
+    // Optional:
+    'options' => array(
+        'url' => false, 
+    ),
+    'text'    => array(
+        'add_upload_file_text' => ' Upload Image' // Change upload button text. Default: "Add or Upload File"
+    ),
+    // query_args are passed to wp.media's library query.
+    'query_args' => array(
+         'type' => array(
+        'image/gif',
+         'image/jpeg',
+         'image/png',
+        ),
+    ),
+    'preview_size' => 'large', // Image size to use when previewing in the admin.
+) );          
+    
+
     
             /**
              * ---------------------------------------

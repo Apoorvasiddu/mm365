@@ -178,7 +178,7 @@
                     localStorage.mrv_sizeofcompany = $('select[name=size_of_company]').val();
                     localStorage.mrv_certifications = $('#certifications').val();
                     localStorage.mrv_certifications_oth = $('#other_certification_input').val();
-                    localStorage.mrv_naics = $(".mr-naic").map(function () { return this.value }).get();
+                    localStorage.mrv_naics = $('input[name="naics_codes[]"]').map(function () { return this.value }).get();
                     localStorage.mrv_intassi = $('#international_assistance').val();
 
                     localStorage.mrv_council = $('#councilFilter').val();

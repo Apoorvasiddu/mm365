@@ -33,6 +33,7 @@
           <thead class="thead-dark">
             <tr>
               <th width="40%"><h6>Details of services or products you are looking for	</h6></th>
+              <th class="no-sort">NAICS Codes</th>
               <th><h6>Requested date & time</h6></th>
               <th><h6>Location</h6></th>
               <th><h6>Status</h6></th>

@@ -10,7 +10,7 @@ $user = wp_get_current_user();
 do_action('mm365_helper_check_loginandrole', ['business_user']);
 
 //Check if user has active registration else redirect
-apply_filters('mm365_helper_check_companyregistration', 'register-your-company');
+do_action('mm365_helper_check_companyregistration', 'register-your-company');
 
 get_header();
 ?>

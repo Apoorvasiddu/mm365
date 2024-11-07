@@ -63,28 +63,33 @@ while ($drafted_items->have_posts()):
               enctype="multipart/form-data">
               <input id="mr_id" type="hidden" name="mr_id" value="<?php echo $mrid; ?>">
 
-              <div class="form-row form-group">
-              <div id="basicSearchFields" class="col-lg-6">
-                      <label for="">NAICS code
-                        <small>&nbsp;&nbsp;&nbsp;Please enter only one NAICS code per row</small>
-                      </label>
-                      <section class="naics-codes">
-                        <div class="form-row  form-group">
-                          <div class="col naics-input-box">
-                            <input id="mr_naics" class="form-control naics-input" type="number" name="naics_codes[]">
-                            <p class="naic-info"></p>
-                          </div>
-                          <div class="col-2 d-flex  align-items-end naics-codes-btn"><a href="#"
-                              class="add-naics-code plus-btn">+</a></div>
-                        </div>
-                      </section>
-                      <section class="naics-codes-dynamic">
 
-                        <?php foreach ((get_post_meta($mrid, 'mm365_naics_codes')) as $key => $value) { ?>
+              <div class="form-row form-group">
+                              <div id="basicSearchFields" class="col-lg-5">
+                                    <label for="">Find NAICS codes<br/>
+                                          <small>Search by category name or NAICS code then click the list to add</small>
+                                    </label>
+                                    
+                                    <section  class="naics-codes">
+                                          <div  class="form-row  form-group">
+                                                <div class="col naics-input-box">
+                                                      <input class="form-control naics-input" type="text" min="10"
+                                                            max="999999" name="naics_code" placeholder="search and select naics code" >
+                                                            <p class="naic-info"></p>
+                                                            <div class="naic-suggested"></div>
+                                                </div>
+                                          </div>
+                                    </section>
+                                     <a class="external_link" target="_blank" href="https://www.naics.com/search/"><span>Search for NAICS code</span> &nbsp;<img src="<?php echo get_template_directory_uri() ?>/assets/images/share.svg" alt=""></a>
+                              </div>
+                              <div class="col-lg-5">
+                              <label for="">Selected NAICS codes<span>*</span><br/></label>
+                                    <section class="naics-codes-dynamic">
+                                    <?php foreach ((get_post_meta($mrid, 'mm365_naics_codes')) as $key => $value) { ?>
                           <section class="naics_remove">
                             <div class="form-row  form-group">
                               <div class="col">
-                                <input id="mr_naics" class="form-control" type="number" min="10" max="999999"
+                                <input id="mr_naics" class="form-control" type="number" readonly min="10" max="999999"
                                   name="naics_codes[]" value="<?php echo $value; ?>">
                               </div>
                               <div class="col-2 d-flex align-items-end naics-codes-btn"><a href="#"
@@ -92,13 +97,12 @@ while ($drafted_items->have_posts()):
                             </div>
                           </section>
                         <?php } ?>
+                        </section>
+                       
+                              </div>
+                              
+                        </div>
 
-                      </section>
-                      <a class="external_link" target="_blank" href="https://www.naics.com/search/"><span>Search for NAICS
-                          code</span> &nbsp;<img src="<?php echo get_template_directory_uri() ?>/assets/images/share.svg"
-                          alt=""></a>
-                    </div>
-              </div>
 
               <div class="form-row form-group">
                 <div class="col-lg-12">
@@ -145,15 +149,14 @@ while ($drafted_items->have_posts()):
 
 
                         $size_of_company = array(
-                          '<$100,000',
-                          '$100,000 - $500,000',
-                          '$500,000 - $1M',
-                          '$1M - $5M',
-                          '$5M - $50M',
-                          '$50M - $200M',
-                          '$200M - $500M',
-                          '$500M - $1B',
-                          '$1B+'
+                               "Less than $100,000",               
+                                "$100,000 - $500,000",
+                                "$500,000 - $1,000,000",
+                                "$1M- $5M",
+                                "$5M-$10M",
+                                "$10M-$25M",
+                               "$25M-$50M",
+                                "Greater than $50,000,000",
                         );
                         foreach ($size_of_company as $key) {
                           if ($current_size_of_company == $key) {

@@ -53,58 +53,62 @@ $stype = get_post_meta($cmp_id, 'mm365_service_type', true);
 
 <div class="form-row form-group">
 
-<div class="col-lg-4">
-
-<div class="row">
-    <div class="col-lg-12">
-        <label for="">NAICS code<span>*</span></label>
-    </div>
-</div>
-<?php
-$existingNaicsCode = get_post_meta($cmp_id, 'mm365_naics_codes');
-?>
-<section class="naics-codes">
-    <div class="form-row  form-group">
-        <div class="col">
-            <input placeholder="E.g. 123456" class="form-control" type="number" min="10" max="999999"
-                name="naics_codes[]" <?php echo (count($existingNaicsCode) <= 0) ? 'required':''; ?>>
-        </div>
-        <div class="col-2 d-flex  align-items-start naics-codes-btn"><a href="#"
-                class="add-naics-code plus-btn">+</a></div>
-    </div>
-</section>
-
-<section class="naics-codes-dynamic">
-    <?php foreach ($existingNaicsCode as $key => $value) { ?>
-        <section class="naics_remove">
-            <div class="form-row  form-group">
-                <div class="col">
-                    <input class="form-control" min="10" max="999999" type="number" name="naics_codes[]"
-                        value="<?php echo $value; ?>" required>
-                </div>
-                <div class="col-2 d-flex  align-items-start naics-codes-btn"></div>
-            </div>
-        </section>
-    <?php } ?>
-</section>
-<label for=""><small>Please enter only one NAICS code per row</small>
-        </label><br/>
-<a class="external_link" target="_blank" href="https://www.naics.com/search/"><span>Search for NAICS
-        code</span> &nbsp;<img src="<?php echo get_template_directory_uri() ?>/assets/images/share.svg" alt="">
-</a>
 
 
-</div>
+
+<div id="basicSearchFields" class="col-lg-4">
+                                    <label for="">Find NAICS codes<br/>
+                                          </label>
+                                   
+                                    <section  class="naics-codes">
+                                          <div  class="form-row">
+                                                <div class="col naics-input-box">
+                                                      <input class="form-control naics-input" type="text" min="10"
+                                                            max="999999" name="naics_code" placeholder="search and select naics code" >
+                                                            <p class="naic-info"></p>
+                                                            <div class="naic-suggested"></div>
+                                                </div>
+                                          </div>
+                                    </section>
+                                   <label><small>Search by category name or NAICS code then click the list to add</small></label>
+                                   <a class="external_link" target="_blank" href="https://www.naics.com/search/"><span>Search for NAICS code</span> &nbsp;<img src="<?php echo get_template_directory_uri() ?>/assets/images/share.svg" alt=""></a>
+                              </div>
+                              <div class="col-lg-3">
+                              <label for="">Selected NAICS codes<span>*</span><br/></label>
+                                    <section class="naics-codes-dynamic">
+                                    <?php foreach ((get_post_meta($cmp_id, 'mm365_naics_codes')) as $key => $value) { ?>
+                          <section class="naics_remove">
+                            <div class="form-row  form-group">
+                              <div class="col">
+                                <input id="mr_naics" class="form-control" type="number" readonly min="10" max="999999"
+                                  name="naics_codes[]" value="<?php echo $value; ?>">
+                              </div>
+                              <div class="col-2 d-flex align-items-end naics-codes-btn"><a href="#"
+                                  class="remove-naics-code plus-btn">-</a></div>
+                            </div>
+                          </section>
+                        <?php } ?>
+
+
+
+                                    </section>
+                              </div>
+
+ 
+
+
+
+
 <div class="col-12 d-block d-sm-none pbo-30"></div>
 
-    <div class="col-lg-4">
+    <div class="col-lg-2">
         <label for="">Contact person<span>*</span></label>
-        <input placeholder="Please enter your full name" class="form-control" type="text" pattern="[a-zA-Z\s]+"
+        <input placeholder="Eg:John Doe" class="form-control" type="text" pattern="[a-zA-Z\s]+"
             minlength="4" required name="contact_person"
             value="<?php echo get_post_meta($cmp_id, 'mm365_contact_person', true); ?>">
     </div>
     <div class="col-12 d-block d-sm-none pbo-30"></div>
-    <div class="col-lg-4">
+    <div class="col-lg-3">
         <label for="">Company address<span>*</span></label>
         <textarea placeholder="Please enter your address" required class="form-control" name="company_address" id=""
             cols="30" rows="1"><?php echo get_post_meta($cmp_id, 'mm365_company_address', true); ?></textarea>
@@ -494,17 +498,17 @@ $existingNaicsCode = get_post_meta($cmp_id, 'mm365_naics_codes');
         <select name="size_of_company" id="" class="form-control mm365-single">
             <option value="">-Select-</option>
             <?php
-            $size_of_company = array(
-                '<$100,000',
-                '$100,000 - $500,000',
-                '$500,000 - $1M',
-                '$1M - $5M',
-                '$5M - $50M',
-                '$50M - $200M',
-                '$200M - $500M',
-                '$500M - $1B',
-                '$1B+'
-            );
+           
+              $size_of_company = array(
+                "Less than $100,000",               
+                "$100,000 - $500,000",
+                "$500,000 - $1,000,000",
+                "$1M- $5M",
+                "$5M-$10M",
+                "$10M-$25M",
+               "$25M-$50M",
+                "Greater than $50,000,000",
+              );
             foreach ($size_of_company as $key) {
                 if ($current_size_of_company == $key) {
                     echo "<option selected>" . $key . "</option>";

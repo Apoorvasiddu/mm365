@@ -27,10 +27,14 @@ get_header();
        <?php
        $team = get_user_meta($user->ID, '_mm365_associated_buyer');
        if(!empty($team)){
+
+        // print_r($team);
+        rsort($team);
+        // print_r($team);
         ?>
         <section class="buyer-team">
         <?php
-       foreach (get_user_meta($user->ID, '_mm365_associated_buyer') as $cmp_id) {
+       foreach ($team as $cmp_id) {
            ?>
           
           <div class="buyer-team-card">
